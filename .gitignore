@@ -1,0 +1,17 @@
+venv
+.env
+__pycache__
+.coverage
+.pytest_cache
+*.ipynb
+*.csv
+*.html
+.DS_Store
+.terraform
+.terraform.lock.hcl
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+notes.md
+listing
+page
