@@ -1,64 +1,96 @@
-"Extract"
+import os
+import pathlib
+from time import sleep
+from datetime import datetime
+from random import randint
+import re
 
-from os import environ
-
-import requests
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
-ZENROWS_URL = 'https://api.zenrows.com/v1/'
-INDEED_PAGES_URL = 'https://uk.indeed.com/jobs?q=junior+data+engineer&l=London%2C+Greater+London&start='
-FULL_LISTING_URL = 'https://uk.indeed.com/viewjob'
+DATE = datetime.now().strftime("%y_%m_%d")
 
-
-def make_listings_request(url, identity):
-    """Perform GET request to retrieve job listing summaries for first three indeed pages."""
-    params = {
-        'url': f'{url}{identity}',
-        'apikey': environ.get("SCRAPE_API_KEY")
-    }
-    response = (requests.get(
-        ZENROWS_URL, params=params)).text
-    parsed_response = BeautifulSoup(response, 'html.parser')
-    return parsed_response
+FULL_LISTING_URL = "https://www.totaljobs.com/{}"
+# ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=3"
+CITIES = ['london']  # add bristol and manchester during production
 
 
-def create_html(data, response, identity) -> None:  # DEVELOPER USE
-    """Create HTML file for job listings summary GET response."""
-    response = response.prettify()
-    with open(f'{data}/{identity}.html', "w") as html_file:
+def get_html_path() -> str:
+    """Used for Developer to test using local html containing listing search page."""
+    path = os.path.abspath('london/page/1.html')
+    url = pathlib.Path(path).as_uri()
+    return url
+
+
+def create_driver() -> webdriver:
+    """Creates web driver to retrieve job listings data from the webpage."""
+    option = Options()
+    option.add_argument("--headless")
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
+                              options=option)
+    return driver
+
+
+def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> str:
+    """Perform GET request to retrieve job listings data from webpage in HTML format."""
+    payload = url.format(attribute)
+    driver.get(payload)
+    response = driver.page_source
+    return response
+
+
+def get_webpages_href(html: str) -> list:
+    """Extract href for each webpage of the job listings web application"""
+    page_hrefs = [page.get('href')
+                  for page in html.find_all('a', class_='res-1joyc6q')]
+    return page_hrefs
+
+
+def get_listings_href(html: str) -> list:
+    """Extract href for each listings full job description webpage"""
+    jobs = html.find_all(class_="res-1tps163")
+    listings_href = []
+    for job in jobs:
+        href = (job.find("a", class_="res-1na8b7y")).get("href")
+        listings_href.append(href.strip('file:///'))
+    return listings_href
+
+
+def create_html(city: str, attribute: str, identity: str, response: str):
+    """Create HTML file to store GET request data from web application."""
+    with open(f'{city}/{attribute}/{identity}.html', "w") as html_file:
         html_file.write(response)
 
 
-def extract_full_listing_url(response):
-    """Iterate through each job listing and processes it."""
-    all_listings_url = []
-    all_listings = response.find_all(
-        'div', class_='css-1m4cuuf e37uo190')
-
-    for listing in all_listings:
-        url = listing.find('a')['href'].strip('/rc/clk')
-        all_listings_url.append(url)
-    return all_listings_url
-
-
-def process_listings_pages() -> None:
-    """Process first three job listings pages"""
-    for i in range(0, 11, 10):
-        print(f'Retrieving listings from page {int(i/10)+1}')
-        response = make_listings_request(INDEED_PAGES_URL, i)
-        create_html('page', response, i)
-        all_listings_url = extract_full_listing_url(response)
-        process_full_listings(all_listings_url)
+def process_webpage(driver, city, attribute, identity, html) -> None:
+    create_html(city, attribute, identity, html)
+    listings_href = get_listings_href(BeautifulSoup(html, 'html.parser'))
+    for href in listings_href:
+        listing = make_listings_request(driver, FULL_LISTING_URL, href)
+        job_id = re.search('job(\d+)', href)
+        if job_id:
+            create_html(city, 'listing', job_id.group(), listing)
+        sleep(randint(2, 6))
 
 
-def process_full_listings(all_listings_url):
-    """Process full listing data for each job"""
-    for url in all_listings_url:
-        response = make_listings_request(FULL_LISTING_URL, url)
-        create_html('listing', response, url)
+def execute():
+    try:
+        ALL_LISTINGS_URL = get_html_path()
+        driver = create_driver()
+        for city in CITIES:
+            webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
+            process_webpage(driver, city, 'page', '1', webpage)
+            webpages = get_webpages_href(BeautifulSoup(webpage, 'html.parser'))
+            # for i, url in enumerate(webpages):
+            #     sleep(randint(2, 6))
+            #     webpage = make_listings_request(driver,url,"")
+            #     process_webpage(driver, city, 'page', str(i+2), webpage)
+    finally:
+        driver.quit()
 
 
 if __name__ == "__main__":
-    load_dotenv()
-    process_listings_pages()
+    execute()
