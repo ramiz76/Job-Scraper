@@ -12,10 +12,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 
 DATE = datetime.now().strftime("%y_%m_%d")
-
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
 ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=3"
-# add bristol and manchester during production
 CITIES = ['london', 'bristol', 'manchester']
 
 
@@ -45,7 +43,7 @@ def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> s
     return
 
 
-def get_webpages_href(html: BeautifulSoup) -> list:
+def get_webpages_href(html: BeautifulSoup) -> list | None:
     """Extract href for each webpage of the job listings web application"""
     page_hrefs = [page.get('href')
                   for page in html.find_all('a', class_='res-1joyc6q')]
@@ -73,9 +71,14 @@ def process_webpage(driver, city, attribute, identity, html) -> None:
     listings_href = get_listings_href(BeautifulSoup(html, 'html.parser'))
     for href in listings_href:
         listing = make_listings_request(driver, FULL_LISTING_URL, href)
-        job_id = re.search('job(\d+)', href)
+        job_id = get_job_id(href)
         if job_id:
             create_html(city, 'listing', job_id.group(), listing)
+
+
+def get_job_id(href) -> str | None:
+    """Uses Regex to retrieve job_id from job listing href."""
+    return (re.search(r'job(\d+)', href))
 
 
 def execute():
