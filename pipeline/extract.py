@@ -16,14 +16,14 @@ DATE = datetime.now().strftime("%y_%m_%d")
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
 ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=3"
 # add bristol and manchester during production
-CITIES = ['london', 'bristol']
+CITIES = ['london', 'bristol', 'manchester']
 
 
-def get_html_path() -> str:
-    """Used for Developer to test using local html containing listing search page."""
-    path = os.path.abspath('london/page/sample.html')
-    url = pathlib.Path(path).as_uri()
-    return url
+# def get_html_path() -> str:
+#     """Used for Developer to test using local html containing listing search page."""
+#     path = os.path.abspath('../empty.html')
+#     url = pathlib.Path(path).as_uri()
+#     return url
 
 
 def create_driver() -> webdriver:
@@ -35,24 +35,24 @@ def create_driver() -> webdriver:
     return driver
 
 
-def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> str:
+def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> str | None:
     """Perform GET request to retrieve job listings data from webpage in HTML format."""
     payload = url.format(attribute)
-    print(payload, 'payload & attribute', attribute)
     driver.get(payload)
     sleep(randint(2, 6))
-    response = driver.page_source
-    return response
+    if driver.title != "":
+        return driver.page_source
+    return
 
 
-def get_webpages_href(html: str) -> list:
+def get_webpages_href(html: BeautifulSoup) -> list:
     """Extract href for each webpage of the job listings web application"""
     page_hrefs = [page.get('href')
                   for page in html.find_all('a', class_='res-1joyc6q')]
     return page_hrefs
 
 
-def get_listings_href(html: str) -> list:
+def get_listings_href(html: BeautifulSoup) -> list:
     """Extract href for each listings full job description webpage"""
     jobs = html.find_all(class_="res-1tps163")
     listings_href = []
@@ -85,19 +85,18 @@ def execute():
         for city in CITIES:
             print(city, 'processing')
             webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
-            process_webpage(driver, city, 'page', '1', webpage)
+            process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
             webpages = get_webpages_href(BeautifulSoup(webpage, 'html.parser'))
             for i, url in enumerate(webpages):
                 page_num = str(i+2)
                 webpage = make_listings_request(driver, url, "")
 
-                process_webpage(driver, city, 'page', page_num, webpage)
-    except KeyboardInterrupt:
-        print('keyboard interrupt')
-        driver.quit()
+                process_webpage(driver, city, 'page',
+                                f'{page_num}-{DATE}', webpage)
     finally:
         driver.quit()
 
 
 if __name__ == "__main__":
-    execute()
+    # execute()
+    pass
