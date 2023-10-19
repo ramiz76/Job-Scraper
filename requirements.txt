@@ -1,6 +1,6 @@
-requests
 bs4
 python-dotenv
 pandas
 selenium
 webdriver_manager
+spacy
