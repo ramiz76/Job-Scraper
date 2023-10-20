@@ -37,12 +37,13 @@ def FakeWebpageNoHref():
 
 
 def FakeWebpageListings(href):
-    html = f"""<article class="res-1tps163" data-genesis-element="CARD" id="job-item-101378062" data-at="job-item">
+    html = f"""<div class="res-vurnku" data-genesis-element="CARD_CONTAINER_GROUP" role="group">
+    <article class="res-1tps163" data-genesis-element="CARD" id="job-item-101378062" data-at="job-item">
     <a class="res-1na8b7y" data-genesis-element="BASE" href={href} 
     data-at="job-item-title" target="_self">
 </article><article class="res-1tps163" data-genesis-element="CARD" id="job-item-101378062" data-at="job-item">
     <a class="res-1na8b7y" data-genesis-element="BASE" href={href} data-at="job-item-title" target="_self">
 </article><article class="res-1tps163" data-genesis-element="CARD" id="job-item-800062" data-at="job-item">
     <a class="res-1na8b7y" data-genesis-element="BASE" href={href} data-at="job-item-title" target="_self">
-</article>"""
+</article></div>"""
     return BeautifulSoup(html, 'html.parser')

@@ -43,17 +43,18 @@ def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> s
     return
 
 
-def get_webpages_href(html: BeautifulSoup) -> list|None:
+def get_webpages_href(html: BeautifulSoup) -> list | None:
     """Extract href for each webpage of the job listings web application"""
     pages_href = [page.get('href')
                   for page in html.find_all('a', class_='res-1joyc6q')]
     return pages_href
 
 
-def get_listings_href(html: BeautifulSoup) -> list|None:
+def get_listings_href(html: BeautifulSoup) -> list | None:
     """Extract href for each listings full job description webpage"""
-    jobs = html.find_all(class_="res-1tps163")
-    listings_href = [job.find('a',class_='res-1na8b7y').get('href') for job in jobs]
+    jobs = html.find(class_="res-vurnku").find_all(class_="res-1tps163")
+    listings_href = [
+        job.find('a', class_='res-1na8b7y').get('href') for job in jobs]
     return listings_href
 
 
@@ -81,9 +82,8 @@ def get_job_id(href: str) -> str | None:
 def execute():
     try:
         driver = create_driver()
-        "created driver"
         for city in CITIES:
-            print(city, 'processing')
+            print('processing', city)
             webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
             process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
             webpages = get_webpages_href(BeautifulSoup(webpage, 'html.parser'))
@@ -98,5 +98,4 @@ def execute():
 
 
 if __name__ == "__main__":
-    # execute()
-    pass
+    execute()

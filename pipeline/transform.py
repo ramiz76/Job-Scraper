@@ -1,6 +1,7 @@
 import json
 
 from bs4 import BeautifulSoup
+import spacy
 
 # To extract:
 # Job posted date (if recently then todays date)
@@ -16,9 +17,9 @@ from bs4 import BeautifulSoup
 
 def open_html_file() -> str:
     """Retrieve HTML data from file and returns as BeautifulSoup object."""
-    file = "../london/listing/job101353161.html"
-    file_two = '../london/listing/job101126880.html'
-    with open(file) as html_file:
+    file = "london/listing/job101187548.html"
+    file_two = "london/listing/job101266908.html"
+    with open(file_two) as html_file:
         html = BeautifulSoup(html_file, 'html.parser')
     return html
 
@@ -47,22 +48,33 @@ def extract_company_data(data: str):
         'div').get_text()
 
 
+# if a <li> is located in the description then it has bullet points to state either requirements, responsibilities or benefits
+# may not be all of them
+# if not located then it will be bundled together within the <p> tags
+
 def extract_job_description(data: str):
     desc = data.get('description')
     desc = BeautifulSoup(desc, 'html.parser')
+    all_text = desc.get_text()
+    # print(all_text)
 
     p_elements = desc.find_all('p')
     p_texts = [p.text for p in p_elements]
 
     li_elements = desc.find_all('li')
-    li_texts = [li.text for li in li_elements]
+    listed_text = [li.text for li in li_elements]
 
-    ul_elements = desc.find_all('ul')
-    ul_texts = [ul.text for ul in ul_elements]
-    print(p_texts)
+    return [p_texts, listed_text]
+
+
+def extract_relevant_text(text: list, listed_text: list):
+    nlp_text = nlp(listed_text)
+    tokens = [token.text for token in nlp_text if not token.is_stop]
 
 
 if __name__ == "__main__":
+    nlp = spacy.load("en_core_web_lg")
     html = open_html_file()
     data = parse_company_data(html)
-    extract_job_description(data)
+    desc = extract_job_description(data)
+    extract_relevant_text(desc[0], desc[1])
