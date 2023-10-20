@@ -43,20 +43,17 @@ def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> s
     return
 
 
-def get_webpages_href(html: BeautifulSoup) -> list | None:
+def get_webpages_href(html: BeautifulSoup) -> list|None:
     """Extract href for each webpage of the job listings web application"""
-    page_hrefs = [page.get('href')
+    pages_href = [page.get('href')
                   for page in html.find_all('a', class_='res-1joyc6q')]
-    return page_hrefs
+    return pages_href
 
 
-def get_listings_href(html: BeautifulSoup) -> list:
+def get_listings_href(html: BeautifulSoup) -> list|None:
     """Extract href for each listings full job description webpage"""
     jobs = html.find_all(class_="res-1tps163")
-    listings_href = []
-    for job in jobs:
-        href = (job.find("a", class_="res-1na8b7y")).get("href")
-        listings_href.append(href.strip('file:///'))
+    listings_href = [job.find('a',class_='res-1na8b7y').get('href') for job in jobs]
     return listings_href
 
 
@@ -66,7 +63,7 @@ def create_html(city: str, attribute: str, identity: str, response: str):
         html_file.write(response)
 
 
-def process_webpage(driver, city, attribute, identity, html) -> None:
+def process_webpage(driver: webdriver, city: str, attribute: str, identity: str, html: str) -> None:
     create_html(city, attribute, identity, html)
     listings_href = get_listings_href(BeautifulSoup(html, 'html.parser'))
     for href in listings_href:
@@ -76,14 +73,14 @@ def process_webpage(driver, city, attribute, identity, html) -> None:
             create_html(city, 'listing', job_id.group(), listing)
 
 
-def get_job_id(href) -> str | None:
+def get_job_id(href: str) -> str | None:
     """Uses Regex to retrieve job_id from job listing href."""
     return (re.search(r'job(\d+)', href))
 
 
 def execute():
-    driver = create_driver()
     try:
+        driver = create_driver()
         "created driver"
         for city in CITIES:
             print(city, 'processing')
