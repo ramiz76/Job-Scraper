@@ -1,4 +1,5 @@
 import json
+import re
 
 from bs4 import BeautifulSoup
 import spacy
@@ -22,8 +23,8 @@ from spaczz.matcher import FuzzyMatcher
 def open_html_file() -> BeautifulSoup:
     """Retrieve HTML data from file and returns as BeautifulSoup object."""
     file = "london/listing/job101187548.html"
-    file_two = "london/listing/job101266908.html"
-    with open(file) as html_file:
+    file_two = "london/listing/job101222329.html"
+    with open(file_two) as html_file:
         html = BeautifulSoup(html_file, 'html.parser')
     return html
 
@@ -66,13 +67,14 @@ def extract_job_description(data: str) -> list:
 
     li_elements = desc.find_all('li')
     listed_desc = [li.text for li in li_elements]
-
-    return listed_desc
+    if listed_desc:
+        return listed_desc
+    return p_texts
 
 
 def open_skills_json() -> set:
     """Retrieve all skill names stored in json file as a set."""
-    with open('skills.json', 'r') as skills_json:
+    with open('skills_filtered.json', 'r') as skills_json:
         data = json.load(skills_json)
     skills_set = set(data.keys())
     return skills_set
@@ -80,12 +82,23 @@ def open_skills_json() -> set:
 
 def extract_skills_from_description(listed_desc: list):
     skills_list = []
+    filter_words = ['scripting', 'standards',
+                    'best', 'experience', 'with', 'like']
     for sentence in nlp.pipe(listed_desc, disable=["tok2vec", "tagger", "parser", "attribute_ruler", "lemmatizer"]):
+        print(sentence)
+
+        # filtered_tokens = [token.text for token in sentence if token.text.lower(
+        # ) not in filter_words and not token.is_stop]
+        # filtered_text = " ".join(filtered_tokens)
+        # sentence = nlp(filtered_text)
 
         matched_skills = skill_matcher(sentence)
-        for skill_dec in matched_skills:
-            skill = sentence[skill_dec[1]:skill_dec[2]]
-            skills_list.append(skill.text)
+        for skill_desc in matched_skills:
+            # skill = sentence[skill_desc[1]:skill_desc[2]]
+            # skills_list.add((skill.text).lower())
+            if skill_desc[3] >= 95:
+                skills_list.append({skill_desc[4]: skill_desc[3]})
+
     return skills_list
 
 
@@ -93,10 +106,13 @@ if __name__ == "__main__":
     load_dotenv()
     nlp = spacy.load("en_core_web_lg")
     skills_set = open_skills_json()
-    # skill_matcher = FuzzyMatcher(nlp.vocab)
-    skill_matcher = PhraseMatcher(nlp.vocab)
-    patterns = set(nlp(text) for text in skills_set)
-    skill_matcher.add('SKILLS', None, *patterns)
+
+    skill_matcher = FuzzyMatcher(nlp.vocab)
+    # skill_matcher = PhraseMatcher(nlp.vocab)
+    patterns = [nlp(text) for text in skills_set]
+    # skill_matcher.add('SKILLS', None, *patterns)
+    skill_matcher.add('SKILLS', patterns, kwargs=[
+                      {"fuzzy_func": "partial", "min_r": 90}])
 
     html = open_html_file()
     company_data = parse_company_data(html)
