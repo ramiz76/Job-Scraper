@@ -3,7 +3,7 @@ from os import environ
 from dotenv import load_dotenv
 from psycopg2 import extensions, connect, DatabaseError, extras, errors
 
-from transform import *
+from transform import get_listing_data
 
 
 def db_connection() -> extensions.connection | None:
@@ -19,13 +19,7 @@ def db_connection() -> extensions.connection | None:
         raise DatabaseError("Error connecting to database.") from exc
 
 
-def load_company_data(conn, company_data: dict):
-    with conn.cursor() as cur:
-        cur.execute("""f""")
-    conn.commit()
-
-
-def load_job_data(conn, job_data: dict):
+def load_listing_data(conn):
     with conn.cursor() as cur:
         cur.execute("""f""")
     conn.commit()
@@ -61,7 +55,7 @@ def get_skills_type_id(conn, type_name: list):
 
 
 def get_skill_id(conn, skill: list):
-    """Retrieve skill_id from database if present else inserts skill data into skills table."""
+    """Retrieve skill_id from database if present else insert skill data into skills table."""
     try:
         with conn.cursor() as cur:
             cur.execute(
@@ -78,16 +72,50 @@ def get_skill_id(conn, skill: list):
     return None
 
 
+def populate_company_table(conn, company: dict):
+    """Populate company table with company data if not present and returns company_id."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """INSERT INTO company (company_name,company_type,company_url) VALUES (%s,%s,%s) RETURNING company_id;""", [company['name'], company['type'], company['url']])
+            company_id = cur.fetchone()
+        if company_id:
+            conn.commit()
+            return company_id
+    except errors.UniqueViolation:
+        print('Duplicate data was not inserted:', company['name'])
+        conn.rollback()
+    return None
+
+
+def get_company_id(conn, company: dict):
+    """Retrieve company id from the database if present else insert company data into company table."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """SELECT company_id FROM company WHERE company_name = (%s);""", [company['name']])
+            company_id = cur.fetchone()
+        if not company_id:
+            company_id = populate_company_table(conn, company)
+            company_id = company_id['company_id']
+        return company_id
+    except DatabaseError:
+        print('Error retrieving company_id from database', company['name'])
+    return None
+
+
 def run_load(conn, file: str, listing_data: dict):
     """Execute loading segment of the pipeline."""
     company = listing_data['company']
+    company_id = get_company_id(conn, company)
     job = listing_data['job']
+
     skills = listing_data['skills']
-    for sentence, skills_list in skills.items():
-        for skill in skills_list:
-            get_skill_id(conn, skill)
-            # load_company_data(conn, company)
-            # load_job_data(conn, job)
+    print(company)
+    # for sentence, skills_list in skills.items():
+    #     for skill in skills_list:
+    #         get_skill_id(conn, skill)
+    #         load_listing_data(conn, job)
 
 
 if __name__ == "__main__":

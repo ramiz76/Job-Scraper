@@ -1,8 +1,6 @@
 from datetime import datetime
 from os import environ, listdir, makedirs
 
-import spacy
-
 from extract import create_driver, run_extract
 from transform import get_listing_data
 from load import run_load
@@ -33,8 +31,6 @@ def run_pipeline():
 
 
 if __name__ == "__main__":
-    nlp_lg = spacy.load('en_core_web_lg')
-    nlp_skills = spacy.load("model-best")
     try:
         driver = create_driver()
         run_pipeline()
