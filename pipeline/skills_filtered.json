@@ -411,7 +411,6 @@
     "Azure Logic Apps": "Azure",
     "Azure Machine Learning": "Azure",
     "Azure Monitor": "Azure",
-    "Azure Pipelines": "Azure",
     "Azure Policy": "Azure",
     "Azure Security": "Azure",
     "Azure Sentinel": "Azure",
@@ -430,12 +429,10 @@
     "Google Cloud Messaging": "Google",
     "Google Cloud Print": "Google",
     "Google Cloud Security": "Google",
-    "Google Code": "Google",
     "Google Colaboratory": "Google",
     "Google Compute Engine (GCE)": "Google",
     "Google Contacts": "Google",
     "Google Custom Search": "Google",
-    "Google Data": "Google",
     "Google Desktops": "Google",
     "Google Display & Video 360": "Google",
     "Google Docs": "Google",
@@ -570,10 +567,9 @@
     "Oracle Documaker": "Oracle",
     "Oracle E-Business Suite":"Oracle",
     "Oracle E-Business Suite Certification": "Certification",
-    "Web Application Development": "Web Application",
+    "Web Application": "Web Application",
     "Web Scraping": "Web Application",
     "Legacy Platforms": "General",
     "Server Integration Services (SIS)": "Data Management",
     "Server Data Tools (SDT)": "Data Management"
-
 }

@@ -19,7 +19,7 @@ CITIES = ['london', 'bristol', 'manchester']
 
 # def get_html_path() -> str:
 #     """Used for Developer to test using local html containing listing search page."""
-#     path = os.path.abspath('../empty.html')
+#     path = os.path.abspath('london/page/1-23_10_22.html')
 #     url = pathlib.Path(path).as_uri()
 #     return url
 
@@ -52,7 +52,7 @@ def get_webpages_href(html: BeautifulSoup) -> list | None:
 
 def get_listings_href(html: BeautifulSoup) -> list | None:
     """Extract href for each listings full job description webpage"""
-    jobs = html.find(class_="res-vurnku").find_all(class_="res-1tps163")
+    jobs = html.find_all(class_="res-1tps163")
     listings_href = [
         job.find('a', class_='res-1na8b7y').get('href') for job in jobs]
     return listings_href
@@ -79,23 +79,37 @@ def get_job_id(href: str) -> str | None:
     return (re.search(r'job(\d+)', href))
 
 
-def execute():
+def run_extract(driver, city):
     try:
-        driver = create_driver()
-        for city in CITIES:
-            print('processing', city)
-            webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
-            process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
-            webpages = get_webpages_href(BeautifulSoup(webpage, 'html.parser'))
-            for i, url in enumerate(webpages):
-                page_num = str(i+2)
-                webpage = make_listings_request(driver, url, "")
+        print('processing', city)
+        webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
+        process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
+        webpages = get_webpages_href(BeautifulSoup(webpage, 'html.parser'))
+        for i, url in enumerate(webpages):
+            page_num = str(i+2)
+            webpage = make_listings_request(driver, url, "")
 
-                process_webpage(driver, city, 'page',
-                                f'{page_num}-{DATE}', webpage)
-    finally:
-        driver.quit()
+            process_webpage(driver, city, 'page',
+                            f'{page_num}-{DATE}', webpage)
+    except:
+        print(f"Error processing {city}")
+# def run_extract():
+#     try:
+#         driver = create_driver()
+#         for city in CITIES:
+#             print('processing', city)
+#             webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
+#             process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
+#             webpages = get_webpages_href(BeautifulSoup(webpage, 'html.parser'))
+#             for i, url in enumerate(webpages):
+#                 page_num = str(i+2)
+#                 webpage = make_listings_request(driver, url, "")
+
+#                 process_webpage(driver, city, 'page',
+#                                 f'{page_num}-{DATE}', webpage)
+#     finally:
+#         driver.quit()
 
 
 if __name__ == "__main__":
-    execute()
+    run_extract()

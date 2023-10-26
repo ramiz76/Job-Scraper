@@ -1,139 +1,230 @@
 import json
 import re
+from os import environ, listdir
+from datetime import datetime
 
 from bs4 import BeautifulSoup
 import spacy
 from dotenv import load_dotenv
-from spacy.matcher import PhraseMatcher
-from spaczz.matcher import FuzzyMatcher
-from rapidfuzz import process, fuzz, utils, distance
 
 
-# To extract:
-# Job posted date (if recently then todays date)
-# job title
-# job location (address and postcode)
-# salary if available
-# company
-# job type (permanent, work from home, contract etc)
-# what the role will have you do
-# what skills are required
-# benefits provided
+DATE = datetime.now().strftime("%y_%m_%d")
+PERIOD = {'year': ['year', 'annum', 'annual', 'annually', 'p.a'],
+          'month': ['month', 'monthly'],
+          'day': ['day', 'daily'],
+          'hour': ['hour', 'hourly']}
+NLP_LG = spacy.load('en_core_web_lg')
+# after testing, more the model to the current directory
+NLP_SKILLS = spacy.load("../ner_training/output/model-best")
 
 
-def open_html_file() -> BeautifulSoup:
-    """Retrieve HTML data from file and returns as BeautifulSoup object."""
-    file = "london/listing/job101187548.html"
-    file_two = "london/listing/job101222329.html"
-    with open(file) as html_file:
+def open_html_file(file_path: str) -> BeautifulSoup:
+    """Open job listing html file and return as BeautifulSoup Object."""
+    with open(file_path) as html_file:
         html = BeautifulSoup(html_file, 'html.parser')
     return html
 
 
-def parse_company_data(html: BeautifulSoup) -> str:
-    """Extract data from listings full job description webpage"""
-    company_data = (html.find("script", id="jobPostingSchema")).string
-    company_data = json.loads(company_data)
-    return company_data
+def parse_listing_data(html: BeautifulSoup) -> dict:
+    """Extract full job listing data and return in JSON format."""
+    listing_data = (html.find("script", id="jobPostingSchema")).string
+    listing_data = json.loads(listing_data)
+    return listing_data
 
 
-def extract_company_data(data: str):
-    """Extract data from listings full job description webpage"""
-    title = data.get('title')
-    url = data.get('url')
-    date = data.get('datePosted')
-    industry = data.get('industry')
-    employment_type = data.get('employmentType')
-    hiring_company_name = data.get('hiringOrganization').get('name')
-    hiring_company_type = data.get('hiringOrganization').get('@type')
-    hiring_company_url = data.get('hiringOrganization').get('url')
-    city = data.get('jobLocation').get('address').get('addressLocality')
-    if not city:
-        city = data.get('jobLocation').get('address').get('addressRegion')
-    salary = (html.find('li', class_='salary')).find(
-        'div').get_text()
+def create_key_pairs(data: dict, key: str):
+    """Pass in keys to be extract its value pair from a dict."""
+    try:
+        return data.get(key)
+    except (KeyError, AttributeError):
+        return None
 
 
-# if a <li> is located in the description then it has bullet points to state either requirements, responsibilities or benefits
-# may not be all of them
-# if not located then it will be bundled together within the <p> tags
+def extract_job_details(html, data: dict) -> dict:
+    """Extract key details of job listing."""
+    job_details = {}
+    job_details['title'] = create_key_pairs(data, 'title')
+    job_details['url'] = create_key_pairs(data, 'url')
+    job_details['date'] = create_key_pairs(data, 'datePosted')
+    job_details['industry'] = create_key_pairs(data, 'industry')
+    job_details['employment_type'] = create_key_pairs(data, 'employmentType')
+    try:
+        city = data.get('jobLocation').get('address').get('addressLocality')
+        if not city:
+            city = data.get('jobLocation').get('address').get('addressRegion')
+    except (KeyError, AttributeError):
+        city = None
+    job_details['city'] = city
+    job_details['salary'] = extract_job_salary(html)
 
-def extract_job_description(data: str) -> list:
-    """make this two functions"""
+    return job_details
+
+
+def extract_digit_from_salary(element):
+    try:
+        num = re.sub(f'[£$€,]', '', element)
+        num = re.sub(f'k', '000', num)
+        decimal = num.find('.')
+        if decimal != -1:
+            num = num[:decimal]
+        if num.isdigit():
+            return num
+    except ValueError:
+        return
+
+
+def extract_job_salary(html: BeautifulSoup):
+    """Extract job salary from salary html tag."""
+    try:
+        salary = (html.find('li', class_='salary')).find(
+            'div').get_text()
+    except (KeyError, ArithmeticError) as err:
+        return None
+    if salary:
+        if 'competitive' in salary.lower():
+            return 'competitive'
+        money_labels = find_money_labels(salary)
+        ranges = find_numbers_from_salary_text(money_labels)
+        period = extract_salary_type(salary)
+    if ranges:
+        return find_salary_range(ranges, period)
+    return None
+
+
+def find_money_labels(salary):
+    """Loop through tokens in salary text to find those with MONEY labels"""
+    money_labels = []
+    doc = NLP_LG(salary)
+    for token in doc.ents:
+        if token.label_ == 'MONEY':
+            money_labels.append(token.text)
+    return money_labels
+
+
+def find_numbers_from_salary_text(money_labels):
+    """Locate numbers from all tokens with the texts tagged with money label."""
+    ranges = []
+    for money in money_labels:
+        if len(money.replace(" ", "")) < len(money):
+            for element in money.split():
+                num = extract_digit_from_salary(element)
+                if num:
+                    ranges.append(num)
+        else:
+            num = extract_digit_from_salary(money)
+            if num:
+                ranges.append(num)
+    return ranges
+
+
+def find_salary_range(ranges: list, period: str) -> list:
+    """Check how many numbers from extracted from salary text and returns range accordingly."""
+    try:
+        low = ranges[0]
+        high = ranges[1]
+        return [low, high, period]
+    except IndexError:
+        return [ranges[0], ranges[0], period]
+
+
+def extract_salary_type(salary: str) -> str:
+    """Locate salary type from salary text of job listing."""
+    elements = salary.split()
+    elements = set(re.sub(r'[^a-zA-Z0-9\s-]', '', element)
+                   for element in elements)
+    for key, value in PERIOD.items():
+        common = elements.intersection(set(value))
+        if common:
+            return key
+    return None
+
+
+def extract_company_details(data: dict) -> dict:
+    """Extract hiring company key details."""
+    hiring_company = {}
+    hiring_company['name'] = data.get('hiringOrganization').get('name')
+    hiring_company['company_type'] = data.get(
+        'hiringOrganization').get('@type')
+    hiring_company['url'] = data.get('hiringOrganization').get('url')
+    return hiring_company
+
+
+def parse_job_description(data: dict) -> list:
+    """Extract job description from html tags and store in a list."""
     desc = data.get('description')
     desc = BeautifulSoup(desc, 'html.parser')
-
     p_elements = desc.find_all('p')
     p_texts = [p.text for p in p_elements]
-
     li_elements = desc.find_all('li')
     listed_desc = [li.text for li in li_elements]
-    if listed_desc:
-        return listed_desc
-    return p_texts
+    job_description = p_texts
+    job_description.extend(listed_desc)
+    return job_description
 
 
 def open_skills_json() -> set:
-    """Retrieve all skill names stored in json file as a set."""
-    with open('skills_filtered.json', 'r') as skills_json:
+    """Retrieve all skill names stored in JSON file."""
+    with open('../pipeline/skills_filtered.json', 'r') as skills_json:
         data = json.load(skills_json)
     skills_set = {key.lower() for key in data.keys()}
-
     return skills_set
 
 
-# def extract_skills_from_description(listed_desc: list):
-#     skills_list = []
-#     filter_words = ['scripting', 'standards',
-#                     'best', 'experience', 'with', 'like']
-#     for sentence in nlp.pipe(listed_desc, disable=["tok2vec", "tagger", "parser", "attribute_ruler", "lemmatizer"]):
-#         print(sentence)
-
-#         # filtered_tokens = [token.text for token in sentence if token.text.lower(
-#         # ) not in filter_words and not token.is_stop]
-#         # filtered_text = " ".join(filtered_tokens)
-#         # sentence = nlp(filtered_text)
-
-#         matched_skills = skill_matcher(sentence)
-#         for skill_desc in matched_skills:
-#             # skill = sentence[skill_desc[1]:skill_desc[2]]
-#             # skills_list.add((skill.text).lower())
-#             if skill_desc[3] >= 80:
-#                 skills_list.append({skill_desc[4]: skill_desc[3]})
-
-#     return skills_list
+def extract_skills_from_description(job_desc: list) -> dict:
+    skills_dict = {}
+    for sentence in job_desc:
+        skills_list = []
+        sentence = NLP_SKILLS(sentence)
+        for ent in sentence.ents:
+            skills_list.append([ent.text, ent.label_])
+        skills_dict[sentence.text] = skills_list
+    return skills_dict
 
 
-def extract_skills_from_description(listed_desc: list):
-    skills_list = []
+def load_json(skills):
+    with open(f'{DATE}-model_output.json', 'w') as json_file:
+        json.dump(skills, json_file, indent=4)
 
-    for sentence in nlp.pipe(listed_desc, disable=["tok2vec", "tagger", "parser", "attribute_ruler", "lemmatizer"]):
-        sentence = (sentence.text).lower()
-        skills = process.extract(sentence, skills_set,
-                                 scorer=fuzz.partial_ratio, score_cutoff=80)
 
-        for skill in skills:
-            if len(skill[0]) > 3:
-                skills_list.append(skill)
-            else:
-                if re.search(r'\b{}\b(?!\w)'.format(skill[0]), sentence):
-                    skills_list.append(skill)
-    return skills_list
+def testing_model_(path):
+    """get skills from model"""
+    files = listdir(path)
+    skills = []
+    for file in files:
+        try:
+            html = open_html_file(f"{path}/{file}")
+            listing_data = parse_listing_data(html)
+            job_details = extract_job_details(html, listing_data)
+            job_desc = parse_job_description(listing_data)
+            skills.append(extract_skills_from_description(job_desc))
+        except:
+            print("Error processing:", file)
+            continue
+    return skills
+
+
+def get_listing_data(path, file) -> dict:
+    try:
+        html = open_html_file(f"{path}/{file}")
+        listing_data = parse_listing_data(html)
+        job_details = extract_job_details(html, listing_data)
+        company_details = extract_company_details(listing_data)
+        job_desc = parse_job_description(listing_data)
+        skills = extract_skills_from_description(job_desc)
+    except:
+        print("Error processing:", file)
+    return {'company': company_details, 'job': job_details, 'skills': skills}
 
 
 if __name__ == "__main__":
     load_dotenv()
-    nlp = spacy.load("en_core_web_lg")
-    skills_set = open_skills_json()
 
-    # skill_matcher = FuzzyMatcher(nlp.vocab)
-    # skill_matcher = PhraseMatcher(nlp.vocab)
-    # patterns = [nlp(text) for text in skills_set]
-    # skill_matcher.add('SKILLS', None, *patterns)
-    # skill_matcher.add('SKILLS', patterns, kwargs=[
-    #                   {"fuzzy_func": "partial", "min_r": 90}])
+    skills = testing_model_('../practise/data_use_this/london/listing')
+    if skills:
+        load_json(skills)
 
-    html = open_html_file()
-    company_data = parse_company_data(html)
-    listed_desc = extract_job_description(company_data)
-    print(extract_skills_from_description(listed_desc))
+    # job_details = extract_job_details(html, listing_data)
+    # print(job_details)
+
+    # job_description = parse_job_description(listing_data)
+    # (extract_skills_from_description(job_description))
