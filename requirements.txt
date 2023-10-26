@@ -4,3 +4,4 @@ pandas
 selenium
 webdriver_manager
 spacy
+psycopg2-binary
