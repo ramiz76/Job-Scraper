@@ -14,7 +14,7 @@ PERIOD = {'year': ['year', 'annum', 'annual', 'annually', 'p.a'],
           'day': ['day', 'daily'],
           'hour': ['hour', 'hourly']}
 NLP_LG = spacy.load('en_core_web_lg')
-# after testing, more the model to the current directory
+# after testing, move the model to the current directory
 NLP_SKILLS = spacy.load("../ner_training/output/model-best")
 
 
@@ -143,7 +143,7 @@ def extract_company_details(data: dict) -> dict:
     """Extract hiring company key details."""
     hiring_company = {}
     hiring_company['name'] = data.get('hiringOrganization').get('name')
-    hiring_company['company_type'] = data.get(
+    hiring_company['type'] = data.get(
         'hiringOrganization').get('@type')
     hiring_company['url'] = data.get('hiringOrganization').get('url')
     return hiring_company
