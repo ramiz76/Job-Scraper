@@ -1,7 +1,9 @@
-bs4
+beautifulsoup4
 python-dotenv
 pandas
 selenium
 webdriver_manager
 spacy
 psycopg2-binary
+pytest
+pylint
