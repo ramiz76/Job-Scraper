@@ -3,7 +3,7 @@ from os import environ
 from dotenv import load_dotenv
 from psycopg2 import extensions, connect, DatabaseError, extras, errors
 
-from transform import get_listing_data
+from pipeline.etl.transform import get_listing_data
 
 
 def db_connection() -> extensions.connection | None:
@@ -30,7 +30,8 @@ def populate_skills_table(conn, type_id: int, skill: str) -> int | None:
     try:
         with conn.cursor() as cur:
             cur.execute(
-                """INSERT INTO skills (type_id,skill) VALUES (%s,%s) RETURNING skill_id;""", [type_id, skill])
+                """INSERT INTO skills (type_id,skill) VALUES (%s,%s) RETURNING skill_id;""",
+                [type_id, skill])
             skill_id = cur.fetchone()
         if skill_id:
             conn.commit()
@@ -46,7 +47,8 @@ def get_skills_type_id(conn, type_name: list):
     try:
         with conn.cursor() as cur:
             cur.execute(
-                """SELECT type_id FROM skills_type WHERE type_name = (%s);""", [type_name])
+                """SELECT type_id FROM skills_type WHERE type_name = (%s);""",
+                [type_name])
             type_id = cur.fetchone()
             return type_id
     except DatabaseError:
@@ -66,7 +68,6 @@ def get_skill_id(conn, skill: list):
             skill_id = populate_skills_table(conn, type_id, skill[0])
             skill_id = skill_id['skill_id']
         return skill_id
-
     except DatabaseError:
         print('Error retrieving keyword id from database', skill)
     return None
@@ -77,7 +78,9 @@ def populate_company_table(conn, company: dict):
     try:
         with conn.cursor() as cur:
             cur.execute(
-                """INSERT INTO company (company_name,company_type,company_url) VALUES (%s,%s,%s) RETURNING company_id;""", [company['name'], company['type'], company['url']])
+                """INSERT INTO company (company_name,company_type,company_url) 
+                VALUES (%s,%s,%s) RETURNING company_id;""",
+                [company['name'], company['type'], company['url']])
             company_id = cur.fetchone()
         if company_id:
             conn.commit()
@@ -89,11 +92,13 @@ def populate_company_table(conn, company: dict):
 
 
 def get_company_id(conn, company: dict):
-    """Retrieve company id from the database if present else insert company data into company table."""
+    """Retrieve company id from the database if present else insert 
+    company data into company table."""
     try:
         with conn.cursor() as cur:
             cur.execute(
-                """SELECT company_id FROM company WHERE company_name = (%s);""", [company['name']])
+                """SELECT company_id FROM company WHERE company_name = (%s);""",
+                [company['name']])
             company_id = cur.fetchone()
         if not company_id:
             company_id = populate_company_table(conn, company)
@@ -104,13 +109,53 @@ def get_company_id(conn, company: dict):
     return None
 
 
+def populate_salary_table(conn, salary: str) -> dict:
+    """Populate salary table with salary data if not present and returns salary_id."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """INSERT INTO salary (salary_value) VALUES (%s) 
+                RETURNING salary_id;""",
+                [salary])
+            salary_id = cur.fetchone()
+        if salary_id:
+            conn.commit()
+            return salary_id
+    except errors.UniqueViolation:
+        print('Duplicate data was not inserted:', salary)
+        conn.rollback()
+    return None
+
+
+def get_salary_id(conn, salary: str):
+    """Retrieve salary id from the database if present else 
+    insert salary data into salary table."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """SELECT salary_id FROM salary WHERE salary_value = (%s);""",
+                [salary])
+            salary_id = cur.fetchone()
+        if not salary_id:
+            salary_id = populate_salary_table(conn, salary)
+            salary_id = salary_id['salary_id']
+        return salary_id
+    except DatabaseError:
+        print('Error retrieving company_id from database', salary)
+    return None
+
+
 def run_load(conn, file: str, listing_data: dict):
     """Execute loading segment of the pipeline."""
     company = listing_data['company']
-    company_id = get_company_id(conn, company)
     job = listing_data['job']
-
     skills = listing_data['skills']
+    salary = job['salary']
+
+    company_id = get_company_id(conn, company)
+    low_salary = get_salary_id(conn, salary[0])
+    high_salary = get_salary_id(conn, salary[1])
+
     print(company)
     # for sentence, skills_list in skills.items():
     #     for skill in skills_list:

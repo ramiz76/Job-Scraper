@@ -1,8 +1,8 @@
 """Unit tests for extract.py"""
 import pytest
 
-from conftest import FakeListingURL, FakeDriver, FakeWebpageHref, FakeWebpageNoHref, FakeWebpageListings
-from extract import make_listings_request, get_webpages_href, get_job_id, get_listings_href
+from tests.conftest import FakeListingURL, FakeDriver, FakeWebpageHref, FakeWebpageNoHref, FakeWebpageListings
+from etl.extract import make_listings_request, get_webpages_href, get_job_id, get_listings_href
 
 
 def test_successful_webpage_request_returns_string():

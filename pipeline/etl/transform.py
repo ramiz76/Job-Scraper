@@ -15,7 +15,7 @@ PERIOD = {'year': ['year', 'annum', 'annual', 'annually', 'p.a'],
           'hour': ['hour', 'hourly']}
 NLP_LG = spacy.load('en_core_web_lg')
 # after testing, move the model to the current directory
-NLP_SKILLS = spacy.load("../ner_training/output/model-best")
+NLP_SKILLS = spacy.load("ner_training/output/model-best")
 
 
 def open_html_file(file_path: str) -> BeautifulSoup:
@@ -27,13 +27,16 @@ def open_html_file(file_path: str) -> BeautifulSoup:
 
 def parse_listing_data(html: BeautifulSoup) -> dict:
     """Extract full job listing data and return in JSON format."""
-    listing_data = (html.find("script", id="jobPostingSchema")).string
-    listing_data = json.loads(listing_data)
+    try:
+        listing_data = (html.find("script", id="jobPostingSchema")).string
+        listing_data = json.loads(listing_data)
+    except AttributeError:
+        listing_data = None
     return listing_data
 
 
-def create_key_pairs(data: dict, key: str):
-    """Pass in keys to be extract its value pair from a dict."""
+def create_key_pairs(data: dict, key: str) -> str:
+    """Pass in keys to extract its value pair from job listings dict."""
     try:
         return data.get(key)
     except (KeyError, AttributeError):
@@ -61,6 +64,7 @@ def extract_job_details(html, data: dict) -> dict:
 
 
 def extract_digit_from_salary(element):
+    """Return string if all characters are digits, excluding currency."""
     try:
         num = re.sub(f'[£$€,]', '', element)
         num = re.sub(f'k', '000', num)
@@ -73,12 +77,31 @@ def extract_digit_from_salary(element):
         return
 
 
+# def extract_job_salary(html: BeautifulSoup):
+# possibly working class
+#     """Extract job salary from salary html tag."""
+#     try:
+#         salary = (html.find('li', class_='job-summary')).find(
+#             'div').get_text()
+#     except (KeyError, ArithmeticError):
+#         return None
+#     if salary:
+#         if 'competitive' in salary.lower():
+#             return 'competitive'
+#         money_labels = find_money_labels(salary)
+#         ranges = find_numbers_from_salary_text(money_labels)
+#         period = extract_salary_type(salary)
+#     if ranges:
+#         return find_salary_range(ranges, period)
+#     return None
+
+
 def extract_job_salary(html: BeautifulSoup):
     """Extract job salary from salary html tag."""
     try:
         salary = (html.find('li', class_='salary')).find(
             'div').get_text()
-    except (KeyError, ArithmeticError) as err:
+    except (KeyError, ArithmeticError):
         return None
     if salary:
         if 'competitive' in salary.lower():
@@ -92,7 +115,7 @@ def extract_job_salary(html: BeautifulSoup):
 
 
 def find_money_labels(salary):
-    """Loop through tokens in salary text to find those with MONEY labels"""
+    """Loop through tokens in salary text to find those with MONEY label."""
     money_labels = []
     doc = NLP_LG(salary)
     for token in doc.ents:
@@ -102,7 +125,7 @@ def find_money_labels(salary):
 
 
 def find_numbers_from_salary_text(money_labels):
-    """Locate numbers from all tokens with the texts tagged with money label."""
+    """Locate numbers from all tokens with the texts tagged with MONEY label."""
     ranges = []
     for money in money_labels:
         if len(money.replace(" ", "")) < len(money):
@@ -118,7 +141,7 @@ def find_numbers_from_salary_text(money_labels):
 
 
 def find_salary_range(ranges: list, period: str) -> list:
-    """Check how many numbers from extracted from salary text and returns range accordingly."""
+    """Check how many numbers are extracted from salary text and returns range accordingly."""
     try:
         low = ranges[0]
         high = ranges[1]
@@ -164,7 +187,7 @@ def parse_job_description(data: dict) -> list:
 
 def open_skills_json() -> set:
     """Retrieve all skill names stored in JSON file."""
-    with open('../pipeline/skills_filtered.json', 'r') as skills_json:
+    with open('pipeline/skills_filtered.json', 'r') as skills_json:
         data = json.load(skills_json)
     skills_set = {key.lower() for key in data.keys()}
     return skills_set
@@ -187,7 +210,7 @@ def load_json(skills):
 
 
 def testing_model_(path):
-    """get skills from model"""
+    """Extract skills from model, TEST FUNCTION."""
     files = listdir(path)
     skills = []
     for file in files:
@@ -219,9 +242,9 @@ def get_listing_data(path, file) -> dict:
 if __name__ == "__main__":
     load_dotenv()
 
-    skills = testing_model_('../practise/data_use_this/london/listing')
-    if skills:
-        load_json(skills)
+    # skills = testing_model_('../practise/data_use_this/london/listing')
+    # if skills:
+    #     load_json(skills)
 
     # job_details = extract_job_details(html, listing_data)
     # print(job_details)

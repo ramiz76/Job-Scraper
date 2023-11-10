@@ -1,3 +1,4 @@
+"""Run the the full ETL pipeline."""
 from datetime import datetime
 from os import environ, listdir, makedirs
 
@@ -9,7 +10,7 @@ DATE = datetime.now().strftime("%y_%m_%d")
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
 ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=3"
 CITIES = ['london', 'bristol', 'manchester']
-FOLDER_PATHS = "{}/{}{}"
+FOLDER_PATHS = "{}/{}"
 
 
 def setup(city):
@@ -20,8 +21,9 @@ def setup(city):
 
 
 def run_pipeline():
+    """Runs ETL pipeline."""
     for city in CITIES:
-        setup()
+        setup(city)
         run_extract(driver, city)
         path = FOLDER_PATHS.format(city, 'listing', '')
         files = listdir(path)
