@@ -13,9 +13,6 @@ PERIOD = {'year': ['year', 'annum', 'annual', 'annually', 'p.a'],
           'month': ['month', 'monthly'],
           'day': ['day', 'daily'],
           'hour': ['hour', 'hourly']}
-NLP_LG = spacy.load('en_core_web_lg')
-# after testing, move the model to the current directory
-NLP_SKILLS = spacy.load("output/model-best")
 
 
 def open_html_file(file_path: str) -> BeautifulSoup:
@@ -205,7 +202,7 @@ def extract_skills_from_description(job_desc: list) -> dict:
 
 
 def load_json(skills):
-    with open(f'{DATE}-model_output.json', 'w') as json_file:
+    with open(f'model-output/{DATE}-model_output.json', 'w') as json_file:
         json.dump(skills, json_file, indent=4)
 
 
@@ -241,10 +238,12 @@ def get_listing_data(path, file) -> dict:
 
 if __name__ == "__main__":
     load_dotenv()
-
-    # skills = testing_model_('../practise/data_use_this/london/listing')
-    # if skills:
-    #     load_json(skills)
+    NLP_LG = spacy.load('en_core_web_lg')
+    # after testing, move the model to the current directory
+    NLP_SKILLS = spacy.load("output/model-best")
+    skills = testing_model_('practise/data_use_this/london/listing')
+    if skills:
+        load_json(skills)
 
     # job_details = extract_job_details(html, listing_data)
     # print(job_details)

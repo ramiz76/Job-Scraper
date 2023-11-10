@@ -27,3 +27,4 @@ ner_training/data
 base_config.cfg
 ner_training/output/model-last
 ner_training
+model-output
