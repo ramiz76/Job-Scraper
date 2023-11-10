@@ -1,3 +1,5 @@
+"""Extracts relevant job listing data from the web scraped job listing HTML."""
+
 import json
 import re
 from os import environ, listdir
@@ -239,14 +241,7 @@ def get_listing_data(path, file) -> dict:
 if __name__ == "__main__":
     load_dotenv()
     NLP_LG = spacy.load('en_core_web_lg')
-    # after testing, move the model to the current directory
     NLP_SKILLS = spacy.load("output/model-best")
     skills = testing_model_('practise/data_use_this/london/listing')
     if skills:
         load_json(skills)
-
-    # job_details = extract_job_details(html, listing_data)
-    # print(job_details)
-
-    # job_description = parse_job_description(listing_data)
-    # (extract_skills_from_description(job_description))
