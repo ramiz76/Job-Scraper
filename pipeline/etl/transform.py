@@ -15,7 +15,7 @@ PERIOD = {'year': ['year', 'annum', 'annual', 'annually', 'p.a'],
           'hour': ['hour', 'hourly']}
 NLP_LG = spacy.load('en_core_web_lg')
 # after testing, move the model to the current directory
-NLP_SKILLS = spacy.load("model-best")
+NLP_SKILLS = spacy.load("output/model-best")
 
 
 def open_html_file(file_path: str) -> BeautifulSoup:
