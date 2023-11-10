@@ -22,4 +22,8 @@ practise
 bristol
 london
 manchester
-data
+birmingham
+ner_training/data
+base_config.cfg
+ner_training/output/model-last
+ner_training
