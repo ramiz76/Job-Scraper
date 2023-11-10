@@ -1,13 +1,13 @@
 # Job Scraper
 
 ## Overview
-Job Scraper is a Python based tool designed to scrape 'Data Engineer' job listings from various major cities in the UK. With the use of string manipulation techniques and a custom built SpaCy NER (Named Entity Recognition) model, this project aims to gather a range of job listing details, including job titles, company information, salary, and specific skills, certifications, and perks mentioned.
+Job Scraper is a Python based tool designed to scrape 'Data Engineer' job listings from various major cities in the UK. With the use of string manipulation techniques and a custom built SpaCy NER (Named Entity Recognition) model, this project aims to gather a range of job listing details, including job titles, company information, salary, and specific skills, certifications, and perks mentioned. <br/>
 With this project, I intend to explore the job market landscape by answering questions, such as:
 
-What are the most in-demand skills for each major city?
-Are there links between specific skills and salary levels?
-Are there correlations between salary and the posting date of a job listing?
-Do particular cities offer greater perks in their job roles?
+- What are the most in-demand skills for each major city?
+- Are there links between specific skills and salary levels?
+- Are there correlations between salary and the posting date of a job listing?
+- Do particular cities offer greater perks in their job roles?
 
 ## Features
 - Web scraping job listings from specified URLs.
