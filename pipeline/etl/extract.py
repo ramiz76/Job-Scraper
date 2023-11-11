@@ -1,3 +1,6 @@
+"""
+This module web scrapes job listing data from a specified job listing website to be stored in HTML format.
+"""
 from os import makedirs
 from time import sleep
 from datetime import datetime
@@ -5,9 +8,9 @@ from random import randint
 import re
 
 from bs4 import BeautifulSoup
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,15 +23,11 @@ ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&
 CITIES = ['london', 'manchester', 'bristol', 'birmingham']
 FOLDER_PATHS = "{}/{}"
 
-# def get_html_path() -> str:
-#     """Used for Developer to test using local html containing listing search page."""
-#     path = os.path.abspath('london/page/1-23_10_22.html')
-#     url = pathlib.Path(path).as_uri()
-#     return url
-
 
 def create_driver() -> webdriver:
-    """Creates web driver to retrieve job listings data from the webpage."""
+    """
+    Create and return a headless Chrome webdriver.
+    """
     option = Options()
     option.add_argument("--headless")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
@@ -37,7 +36,9 @@ def create_driver() -> webdriver:
 
 
 def accept_cookies(driver) -> None:
-    """Handle cookies pop up by selecting accept button."""
+    """
+    Accept cookies from pop ups in the webdriver.
+    """
     try:
         WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.ID, "ccmgt_explicit_accept"))
@@ -49,7 +50,10 @@ def accept_cookies(driver) -> None:
 
 
 def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> str:
-    """Perform GET request to retrieve HTML data of job listing website."""
+    """
+    Perform a GET request to retrieve HTML data of a job listing website.
+    Returns the page source if successful, otherwise returns None.
+    """
     payload = url.format(attribute)
     driver.get(payload)
     accept_cookies(driver)
@@ -59,14 +63,20 @@ def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> s
 
 
 def get_webpages_href(html: BeautifulSoup) -> list:
-    """Extract href for each page of the job listing web website."""
+    """
+    Extract href for each page of the job listing website.
+    Returns a list of href strings.
+    """
     pages_href = [page.get('href')
                   for page in html.find_all('a', class_='res-1joyc6q')]
     return pages_href
 
 
 def get_listings_href(html: BeautifulSoup) -> list:
-    """Extract href for full job description webpage of each job listing."""
+    """
+    Extract href for the full job description webpage of each job listing.
+    Returns a list of href strings.
+    """
     jobs = html.find_all(class_="res-1tps163")
     listings_href = [
         job.find('a', class_='res-1na8b7y').get('href') for job in jobs]
@@ -74,13 +84,17 @@ def get_listings_href(html: BeautifulSoup) -> list:
 
 
 def create_html(city: str, attribute: str, identity: str, response: str) -> None:
-    """Create HTML file to store GET request data from website."""
+    """
+    Create an HTML file to store GET request data from the website.
+    """
     with open(f'{city}/{attribute}/{identity}.html', "w") as html_file:
         html_file.write(response)
 
 
 def handle_listing_extraction(driver: webdriver, job_id: tuple, city: str) -> None:
-    """Extract HTML data from full job listing webpage."""
+    """
+    Extract HTML data from the full job listing webpage.
+    """
     accept_cookies(driver)
     listing = driver.page_source
     if job_id:
@@ -88,7 +102,9 @@ def handle_listing_extraction(driver: webdriver, job_id: tuple, city: str) -> No
 
 
 def process_webpage(driver: webdriver, city: str, attribute: str, identity: str, html: str) -> None:
-    """Navigate through each job listing of the webpage to extract HTML data using automated clicking."""
+    """
+    Navigate through each job listing of the webpage to extract HTML data using automated clicking.
+    """
     create_html(city, attribute, identity, html)
     listings_href = get_listings_href(BeautifulSoup(html, 'html.parser'))
     for href in listings_href:
@@ -116,8 +132,11 @@ def process_webpage(driver: webdriver, city: str, attribute: str, identity: str,
 
 
 def get_job_id(href: str) -> str:
-    """Use Regex to retrieve job_id from job listing href."""
-    return (re.search(r'job(\d+)', href))
+    """
+    Use regex to retrieve the job_id from a job listing href.
+    Returns a regex Match object if found, None otherwise.
+    """
+    return re.search(r'job(\d+)', href)
 
 
 # def run_extract(driver, city):
@@ -137,14 +156,18 @@ def get_job_id(href: str) -> str:
 #         print(f"Error processing {city}")
 
 def setup(city):
-    """Create required folders to store job listing data."""
+    """
+    Create required folders to store job listing data.
+    """
     makedirs(FOLDER_PATHS.format(city, 'page'), exist_ok=True)
     makedirs(FOLDER_PATHS.format(
         city, 'listing'), exist_ok=True)
 
 
 def run_extract() -> None:
-    """check if for load"""
+    """
+    Main function to execute the extraction process for all cities.
+    """
     try:
         driver = create_driver()
         for city in CITIES:
