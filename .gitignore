@@ -24,7 +24,6 @@ london
 manchester
 birmingham
 ner_training/data
+ner_training/output
 base_config.cfg
-ner_training/output/model-last
-ner_training
 model-output

@@ -1,0 +1,1845 @@
+[
+    [
+        "Proficiency in Python and Java is required.",
+        {
+            "entities": [
+                [
+                    15,
+                    21,
+                    "HARD"
+                ],
+                [
+                    26,
+                    30,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "A degree in Computer Science is preferred.",
+        {
+            "entities": [
+                [
+                    12,
+                    28,
+                    "CERT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Experience with AWS services like S3 and EC2 is a plus.",
+        {
+            "entities": [
+                [
+                    16,
+                    19,
+                    "HARD"
+                ],
+                [
+                    34,
+                    36,
+                    "HARD"
+                ],
+                [
+                    41,
+                    44,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Strong problem-solving skills are essential for this role.",
+        {
+            "entities": [
+                [
+                    7,
+                    22,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Certifications in data science are a bonus.",
+        {
+            "entities": [
+                [
+                    18,
+                    30,
+                    "CERT"
+                ]
+            ]
+        }
+    ],
+    [
+        "The role requires proficiency in Java and C++.",
+        {
+            "entities": [
+                [
+                    33,
+                    37,
+                    "HARD"
+                ],
+                [
+                    42,
+                    45,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "The role demands expertise in front-end technologies, such as HTML, CSS, and JavaScript.",
+        {
+            "entities": [
+                [
+                    30,
+                    52,
+                    "SOFT"
+                ],
+                [
+                    62,
+                    66,
+                    "HARD"
+                ],
+                [
+                    68,
+                    71,
+                    "HARD"
+                ],
+                [
+                    77,
+                    87,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Experience with data orchestration frameworks like Apache Beam and Luigi is beneficial.",
+        {
+            "entities": [
+                [
+                    16,
+                    45,
+                    "SOFT"
+                ],
+                [
+                    51,
+                    62,
+                    "HARD"
+                ],
+                [
+                    67,
+                    72,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "The ideal candidate should have experience with real-time data processing.",
+        {
+            "entities": [
+                [
+                    48,
+                    73,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Strong knowledge of data lakes, data warehouses, and lakehouse architectures is essential.",
+        {
+            "entities": [
+                [
+                    20,
+                    30,
+                    "SOFT"
+                ],
+                [
+                    32,
+                    47,
+                    "SOFT"
+                ],
+                [
+                    53,
+                    62,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Familiarity with Web Services",
+        {
+            "entities": [
+                [
+                    17,
+                    29,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Basic AWS knowledge",
+        {
+            "entities": [
+                [
+                    6,
+                    9,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Worked with Lambda, S3 Buckets, Step Functions",
+        {
+            "entities": [
+                [
+                    12,
+                    18,
+                    "HARD"
+                ],
+                [
+                    20,
+                    30,
+                    "HARD"
+                ],
+                [
+                    32,
+                    46,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "competency with programming languages such as R and JS.",
+        {
+            "entities": [
+                [
+                    46,
+                    47,
+                    "HARD"
+                ],
+                [
+                    52,
+                    54,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Desirable candidates are efficient in Java and C programming.",
+        {
+            "entities": [
+                [
+                    38,
+                    42,
+                    "HARD"
+                ],
+                [
+                    47,
+                    48,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Must be able to work on projects using Python and R etc.",
+        {
+            "entities": [
+                [
+                    39,
+                    45,
+                    "HARD"
+                ],
+                [
+                    50,
+                    51,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "We want a candidate who is flexbile",
+        {
+            "entities": [
+                [
+                    27,
+                    35,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Innovation - Your inquisitiveness knows no bounds and you love to learn. You embrace creativity and enjoy working with different people and their viewpoints.",
+        {
+            "entities": [
+                [
+                    0,
+                    10,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "We will make sure you are ready and confident for the workplace through our salaried and fully remote training",
+        {
+            "entities": []
+        }
+    ],
+    [
+        " As part of Sparta's all-female Academy, we will provide you with in-depth knowledge of the technical tools and skills you'll need to succeed in your future career in an all-female training environment.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Tech Stack: Azure, SQL, T-SQL, PowerBI",
+        {
+            "entities": [
+                [
+                    12,
+                    17,
+                    "HARD"
+                ],
+                [
+                    19,
+                    22,
+                    "HARD"
+                ],
+                [
+                    24,
+                    29,
+                    "HARD"
+                ],
+                [
+                    31,
+                    38,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Great opportunity for a talented Data Engineer to join a media company helping their clients reach specific target audiences.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Innovative media/adtech business who have built their own bespoke platform that is used by the likes of McDonald's, Volkswagen, Starbucks, Puma and more.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Demonstrated how data and visualisations can be deployed today to develop beneficial data solutions.",
+        {
+            "entities": [
+                [
+                    26,
+                    40,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Confidence can sometimes hold us back from applying for a job. But we'll let you in on a secret: there's no such thing as a 'perfect' candidate. If you feel you meet 75% of the requirements for this role, we would love to hear from you.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Also, if you are considering a career move or a sector-jump, please get in touch, we welcome applications from people with transferable skills.",
+        {
+            "entities": [
+                [
+                    123,
+                    142,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Relevant experience that will support you in the role include:",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Experience with big data technologies such as PySpark, Databricks, Delta Lake, or BigQuery",
+        {
+            "entities": [
+                [
+                    16,
+                    24,
+                    "SOFT"
+                ],
+                [
+                    46,
+                    53,
+                    "HARD"
+                ],
+                [
+                    55,
+                    65,
+                    "HARD"
+                ],
+                [
+                    67,
+                    77,
+                    "HARD"
+                ],
+                [
+                    82,
+                    90,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Bonuses and structured pay rises.",
+        {
+            "entities": [
+                [
+                    0,
+                    7,
+                    "PERK"
+                ],
+                [
+                    12,
+                    32,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "You will have access to free eye care and fitness memberships",
+        {
+            "entities": [
+                [
+                    29,
+                    37,
+                    "PERK"
+                ],
+                [
+                    42,
+                    61,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Degree level qualification in engineering or science discipline",
+        {
+            "entities": [
+                [
+                    30,
+                    41,
+                    "CERT"
+                ],
+                [
+                    45,
+                    52,
+                    "CERT"
+                ]
+            ]
+        }
+    ],
+    [
+        "We anticipate a paying salary of between \u00a340,000 & \u00a360,000, a performance related bonus of up to 12.5%, an attractive pension scheme with 12% employer and 6% employee contributions. You will also receive a flexible benefits allowance of \u00a32,200, enabling you to create a bespoke package to suit your needs.",
+        {
+            "entities": [
+                [
+                    62,
+                    102,
+                    "PERK"
+                ],
+                [
+                    118,
+                    132,
+                    "PERK"
+                ],
+                [
+                    215,
+                    243,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "\u2022 Drive to Deliver Results",
+        {
+            "entities": []
+        }
+    ],
+    [
+        " understanding how data is ingested from different sources.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Team Leadership - You will manage several multi-disciplinary data delivery teams",
+        {
+            "entities": [
+                [
+                    5,
+                    15,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Data Visualisation - Although we have",
+        {
+            "entities": [
+                [
+                    0,
+                    18,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Hybrid working - We're in the office on Tuesday, Wednesday and Thursdays",
+        {
+            "entities": [
+                [
+                    0,
+                    14,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        " Wednesday and Thursdays",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "pension scheme",
+        {
+            "entities": [
+                [
+                    0,
+                    14,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Many retail discounts on - travel and leisure, health",
+        {
+            "entities": [
+                [
+                    5,
+                    21,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Benefits",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Power BI",
+        {
+            "entities": [
+                [
+                    0,
+                    8,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Senior Data Engineer - Cloud",
+        {
+            "entities": [
+                [
+                    23,
+                    28,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Marketing is entering a new age. Data-driven, technology-powered, always changing, always innovating. This is an age of opportunities for new growth and value creation, realized by forward-thinking marketing leaders. But it's also an ongoing challenge to cope with the speed, volume and complexity of change.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "knowledge of the Google Marketing Platform as well",
+        {
+            "entities": [
+                [
+                    17,
+                    42,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "{{ job.title }}",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Liaise with customers to propose modern production solutions from customer requirements",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Execute implementations to tight deadlines, working well both independently and as part of a team",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Govern our technologies to ensure security standards are met",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Design and build data pipelines using a cloud platform.",
+        {
+            "entities": [
+                [
+                    17,
+                    31,
+                    "SOFT"
+                ],
+                [
+                    40,
+                    45,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Day Rate: \u00a3435",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Refresh existing models",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Refine/update existing code",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Ability to interpret user requirements to design & build effective solutions.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Matched pension contributions up to 10%",
+        {
+            "entities": [
+                [
+                    0,
+                    39,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "T-SQL",
+        {
+            "entities": [
+                [
+                    0,
+                    5,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Google center",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "AREA OF EXPERTISE:",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Google",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "ETL",
+        {
+            "entities": [
+                [
+                    0,
+                    3,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Airflow and Hadoop",
+        {
+            "entities": [
+                [
+                    0,
+                    7,
+                    "HARD"
+                ],
+                [
+                    12,
+                    18,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "and fluid start-up environment as well",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Working with Kimball and T-SQL",
+        {
+            "entities": [
+                [
+                    13,
+                    20,
+                    "HARD"
+                ],
+                [
+                    25,
+                    30,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Ingest data for OLTP pricing system",
+        {
+            "entities": [
+                [
+                    16,
+                    20,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Joining Macquarie means you'll be able to work in a way that suits you best.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Benefits \ud83c\udfd6",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "transform and process data us ing Python",
+        {
+            "entities": [
+                [
+                    34,
+                    40,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Charles River employees are innovative thinkers",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "storage",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Required Skills and Experience for a Python Data Engineer:",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "We are thrilled to be partnered with a global hedge fund searching for a Python Data Engineer",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "This role in a nutshell:",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "286153",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Investment Bank",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Delta Data Engineer/Database Developer",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "#",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Belfast , Birmingham , Bristol , Cambridge , Cardiff , Carlisle PSA Hub , Chelmsford , Edinburgh , Gatwick , Glasgow , Leeds , Leicester , Liverpool , Manchester , Milton Keynes , Newcastle , Nottingham , Oxford , Preston PSA Hub , Reading , Sheffield , Southampton , Apply",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Open to any GTUK location",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Grant Thornton UK's Digital Hub is a thriving centre of digital innovation",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "#LI-MD1 Apply Share with a friend:",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "comes with a raft of benefits",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Generous Discretionary Profit Share Scheme",
+        {
+            "entities": [
+                [
+                    9,
+                    42,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Annual pay review",
+        {
+            "entities": [
+                [
+                    0,
+                    17,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Eye test reimbursement",
+        {
+            "entities": [
+                [
+                    0,
+                    22,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Employee discount scheme across hundreds of retailers",
+        {
+            "entities": [
+                [
+                    0,
+                    24,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Paid parental and adoption leave",
+        {
+            "entities": [
+                [
+                    0,
+                    32,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Recognised Health and Safety Qualification, such as IOSH.",
+        {
+            "entities": [
+                [
+                    52,
+                    56,
+                    "CERT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Work in close collaboration with the Group Head of Data Science",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Benefits \ud83c\udfd6",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "budget for personal development.",
+        {
+            "entities": [
+                [
+                    0,
+                    38,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Must be skilled with AWS Glue and ElasticBeanstalk",
+        {
+            "entities": [
+                [
+                    21,
+                    29,
+                    "HARD"
+                ],
+                [
+                    34,
+                    50,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "In-depth understanding of distributed computing principles",
+        {
+            "entities": [
+                [
+                    26,
+                    58,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Proficiency in big data platforms like Apache Hadoop, Spark, and Hive",
+        {
+            "entities": [
+                [
+                    39,
+                    52,
+                    "HARD"
+                ],
+                [
+                    54,
+                    59,
+                    "HARD"
+                ],
+                [
+                    65,
+                    69,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Experience with real-time data processing using Apache Storm or Samza",
+        {
+            "entities": [
+                [
+                    16,
+                    41,
+                    "SOFT"
+                ],
+                [
+                    48,
+                    60,
+                    "HARD"
+                ],
+                [
+                    64,
+                    69,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Familiarity with data visualization tools such as Tableau, PowerBI, or Looker",
+        {
+            "entities": [
+                [
+                    17,
+                    41,
+                    "SOFT"
+                ],
+                [
+                    50,
+                    57,
+                    "HARD"
+                ],
+                [
+                    59,
+                    66,
+                    "HARD"
+                ],
+                [
+                    71,
+                    77,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Ability to work with various database systems including SQL and NoSQL databases",
+        {
+            "entities": [
+                [
+                    56,
+                    59,
+                    "HARD"
+                ],
+                [
+                    64,
+                    69,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Strong skills in data warehousing and ETL process development",
+        {
+            "entities": [
+                [
+                    17,
+                    33,
+                    "SOFT"
+                ],
+                [
+                    38,
+                    41,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Expertise in AWS Redshift, Google BigQuery, or Azure SQL Data Warehouse",
+        {
+            "entities": [
+                [
+                    13,
+                    25,
+                    "HARD"
+                ],
+                [
+                    27,
+                    42,
+                    "HARD"
+                ],
+                [
+                    47,
+                    71,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Experience in setting up data pipelines using Apache Airflow or similar technologies",
+        {
+            "entities": [
+                [
+                    30,
+                    39,
+                    "SOFT"
+                ],
+                [
+                    46,
+                    60,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Understanding of data governance, data quality management, and data security",
+        {
+            "entities": [
+                [
+                    17,
+                    32,
+                    "SOFT"
+                ],
+                [
+                    34,
+                    57,
+                    "SOFT"
+                ],
+                [
+                    63,
+                    76,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Hands-on experience with machine learning algorithms and data modeling",
+        {
+            "entities": [
+                [
+                    25,
+                    52,
+                    "SOFT"
+                ],
+                [
+                    57,
+                    70,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Employee stock purchase plan and yearly performance bonuses",
+        {
+            "entities": [
+                [
+                    9,
+                    28,
+                    "PERK"
+                ],
+                [
+                    40,
+                    59,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Sponsored attendance to leading industry conferences and events",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Access to cutting-edge tools and technologies for data engineering projects",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Collaboration with a global team of experienced data engineers and analysts",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Opportunity to work on diverse data engineering challenges across different industries",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Regular internal training sessions",
+        {
+            "entities": [
+                [
+                    8,
+                    34,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Healthcare benefits, including medical, dental, and vision coverage",
+        {
+            "entities": [
+                [
+                    0,
+                    18,
+                    "PERK"
+                ],
+                [
+                    31,
+                    38,
+                    "PERK"
+                ],
+                [
+                    40,
+                    46,
+                    "PERK"
+                ],
+                [
+                    52,
+                    67,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Team outings, social events, and recreational activities for team bonding",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Support for professional certification programs in data engineering and related fields",
+        {
+            "entities": [
+                [
+                    12,
+                    47,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "Junior Data Engineer",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "\u00a327,000 - \u00a335,000",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Hybrid \u2013 Southampton",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Are you looking for a business that is focused on using only modern technologies and specialise purely on providing innovation with a data driven approach?",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "You will quickly grow within this technical environment alongside other senior Data Engineers.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "You\u2019ll be joining a company with plenty of investment and the opportunities here for you are endless.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Hybrid working is a priority for this business, ensuring you can balance work and home life easily.",
+        {
+            "entities": [
+                [
+                    0,
+                    14,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "You will be working alongside a team of Senior Data Engineers, working first-hand a variety of technical projects.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Using your technical expertise, you\u2019ll be conducting data ingestions, extracting data and cleansing within a Databricks environment, maintaining, and updating Azure SQL databases, while supporting the team with ETL pipelines.",
+        {
+            "entities": [
+                [
+                    53,
+                    68,
+                    "SOFT"
+                ],
+                [
+                    109,
+                    119,
+                    "HARD"
+                ],
+                [
+                    159,
+                    178,
+                    "HARD"
+                ],
+                [
+                    211,
+                    214,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "You\u2019ll be continuously learning and growing within this business using cutting edge technologies.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "You\u2019ll need to have a strong understanding of data ingestion, extraction, and transformation, and be able to code in SQL, and Python / Pyspark.",
+        {
+            "entities": [
+                [
+                    46,
+                    60,
+                    "SOFT"
+                ],
+                [
+                    62,
+                    72,
+                    "SOFT"
+                ],
+                [
+                    78,
+                    92,
+                    "SOFT"
+                ],
+                [
+                    117,
+                    120,
+                    "HARD"
+                ],
+                [
+                    126,
+                    132,
+                    "HARD"
+                ],
+                [
+                    135,
+                    142,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "If you have experience with Microsoft Azure, ideally Databricks, this would be a real bonus, but isn\u2019t essential, as the company can offer you full training on this.",
+        {
+            "entities": [
+                [
+                    28,
+                    43,
+                    "HARD"
+                ],
+                [
+                    53,
+                    63,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "This company has a real family feel culture, so you can guarantee you will be welcomed into the business from day one.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "They are a very social team, taking part in regular events and team challenges.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Private Healthcare will be offered to you also, should you ever need it, as well as a generous pension.",
+        {
+            "entities": [
+                [
+                    0,
+                    18,
+                    "PERK"
+                ],
+                [
+                    95,
+                    102,
+                    "PERK"
+                ]
+            ]
+        }
+    ],
+    [
+        "You probably want to know more about the business, their products, their plans, and their history.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Don\u2019t worry if your CV isn\u2019t up to date, we can deal with that later.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "What We Do At Goldman Sachs, our Engineers don\u2019t just make things \u2013 we make things possible.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Change the world by connecting people and capital with ideas.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Solve the most challenging and pressing engineering problems for our clients.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Create new businesses, transform finance, and explore a world of opportunity at the speed of markets.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Engineering, which is comprised of our Technology Division and global strategists groups, is at the critical center of our business.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Want to push the limit of digital possibilities? Start here.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "We look for creative collaborators who evolve, adapt to change and thrive in a fast-paced global environment.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Curate, design and catalogue high quality data models to ensure that data is accessible and reliable",
+        {
+            "entities": [
+                [
+                    42,
+                    53,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Build highly scalable data processing frameworks for use across a wide range of datasets",
+        {
+            "entities": [
+                [
+                    22,
+                    48,
+                    "SOFT"
+                ],
+                [
+                    80,
+                    88,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Provide data-driven insight and decision-making critical to GS\u2019s business processes, in order to expose data in a scalable and effective manner",
+        {
+            "entities": [
+                [
+                    8,
+                    27,
+                    "SOFT"
+                ],
+                [
+                    32,
+                    47,
+                    "SOFT"
+                ],
+                [
+                    65,
+                    83,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Understanding existing and potential data sets in both an engineering and business context",
+        {
+            "entities": [
+                [
+                    37,
+                    46,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Deploy modern data management tools to curate our most important data sets, models and processes, while identifying areas for process automation and further efficiencies",
+        {
+            "entities": [
+                [
+                    7,
+                    35,
+                    "SOFT"
+                ],
+                [
+                    65,
+                    74,
+                    "SOFT"
+                ],
+                [
+                    126,
+                    144,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Evaluate, select and acquire new internal & external data sets that contribute to business decision making",
+        {
+            "entities": [
+                [
+                    53,
+                    62,
+                    "SOFT"
+                ],
+                [
+                    82,
+                    106,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "You will work with data processing pipelines",
+        {
+            "entities": [
+                [
+                    19,
+                    44,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Drive adoption of Cloud technology for data processing and warehousing, and providing scalable and performant solutions",
+        {
+            "entities": [
+                [
+                    18,
+                    23,
+                    "SOFT"
+                ],
+                [
+                    39,
+                    54,
+                    "SOFT"
+                ],
+                [
+                    59,
+                    70,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "6+ years of relevant work experience in a team-focused environment",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Amazon\u2019s mission is to be the most customer centric company in the world.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "The Workforce Staffing organization is on the front line of that mission by hiring the hourly fulfilment associates who make that mission a reality.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "This program re-invents how Amazon attracts, communicates with, and ultimately hires its hourly associates.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "This team own multi-layered research and program implementations to drive deep learnings, process improvements, and strategic recommendations to global leadership.",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Are you passionate about data?",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Do you enjoy questioning the status quo?",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "Do complex and difficult challenges excite you?",
+        {
+            "entities": []
+        }
+    ],
+    [
+        "As a Data Engineer, you should be an expert in the architecture of data solutions for the Enterprise using multiple platforms.",
+        {
+            "entities": [
+                [
+                    51,
+                    81,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "You should have excellent communication skills to be able to work with business analysts and engineers to determine how best to design the data warehouse for reporting and analytics.",
+        {
+            "entities": [
+                [
+                    26,
+                    46,
+                    "SOFT"
+                ],
+                [
+                    139,
+                    153,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "You will be responsible for designing and implementing scalable ETL processes in the data platform to support the rapidly growing and dynamic business demand for data, and use it to deliver the data as service which will have an immediate influence on day-to-day decision making.",
+        {
+            "entities": [
+                [
+                    64,
+                    67,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "You should have the ability to develop and tune SQL to provide optimized solutions to the business.",
+        {
+            "entities": [
+                [
+                    48,
+                    51,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "3+ years of data engineering experience",
+        {
+            "entities": [
+                [
+                    12,
+                    39,
+                    "SOFT"
+                ]
+            ]
+        }
+    ],
+    [
+        "Experience with big data technologies such as: Hadoop, Hive, Spark, EMR",
+        {
+            "entities": [
+                [
+                    16,
+                    37,
+                    "SOFT"
+                ],
+                [
+                    47,
+                    53,
+                    "HARD"
+                ],
+                [
+                    55,
+                    59,
+                    "HARD"
+                ],
+                [
+                    61,
+                    66,
+                    "HARD"
+                ],
+                [
+                    68,
+                    71,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Experience with SQL",
+        {
+            "entities": [
+                [
+                    16,
+                    19,
+                    "HARD"
+                ]
+            ]
+        }
+    ],
+    [
+        "Experience in at least one modern scripting or programming language, such as Python, Java, Scala, or NodeJS",
+        {
+            "entities": [
+                [
+                    77,
+                    83,
+                    "HARD"
+                ],
+                [
+                    85,
+                    89,
+                    "HARD"
+                ],
+                [
+                    91,
+                    96,
+                    "HARD"
+                ],
+                [
+                    101,
+                    107,
+                    "HARD"
+                ]
+            ]
+        }
+    ]
+]
