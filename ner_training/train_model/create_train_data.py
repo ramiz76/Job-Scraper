@@ -1,4 +1,4 @@
-"""This module is used to create training data from inputs using GPT."""
+"""This module is used to create new training data from from the current outputs of the model (to be manually reviewed)."""
 import json
 
 
@@ -27,8 +27,8 @@ def create_training_data(input: list):
 
 
 if __name__ == "__main__":
-    raw_file = 'ner_training/retrain/raw_data.json'
-    training_file = 'ner_training/retrain/verifying_data.json'
+    raw_file = 'ner_training/train_model/raw_data.json'
+    training_file = 'ner_training/train_model/verifying_data.json'
     raw_data = open_json(raw_file)
     processed_data = create_training_data(raw_data)
     load_json(training_file, processed_data)

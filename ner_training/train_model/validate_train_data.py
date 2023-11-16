@@ -18,5 +18,5 @@ def validate_training_data(data: list[list]):
 
 
 if __name__ == "__main__":
-    training_data = load_data("ner_training/retrain/verifying_data.json")
+    training_data = load_data("ner_training/train_model/verifying_data.json")
     validate_training_data(training_data)

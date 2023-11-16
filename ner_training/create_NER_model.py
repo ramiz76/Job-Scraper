@@ -13,7 +13,7 @@ def load_data(file):
 
 def create_training(TRAINING_DATA):
     db = DocBin()
-    for i in range(100):
+    for i in range(30):
         random.shuffle(TRAINING_DATA)
         for text, skills in (TRAINING_DATA):
             doc = nlp(text)
