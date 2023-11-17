@@ -2234,5 +2234,28 @@
                 ]
             ]
         }
+    ],
+        [
+        "Knowledge of Cloud based big data frameworks such as data lake, Graph and other no-SQL databases.",
+        {
+            "entities": [
+                [
+                    "Cloud",
+                    "SOFT"
+                ],
+                [
+                    "data lake",
+                    "SOFT"
+                ],
+                [
+                    "Graph",
+                    "SOFT"
+                ],
+                [
+                    "no-SQL databases",
+                    "SOFT"
+                ]
+            ]
+        }
     ]
 ]

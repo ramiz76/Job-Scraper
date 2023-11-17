@@ -1,4 +1,4 @@
 #!/bin/bash
 
 source .env
-psql -h $DBHOST -U $DBUSER -d $DBNAME -p $DBPORT -a -f setup.sql
+psql -h $DATABASE_HOST -U $DATABASE_USERNAME -d $POSTGRES -p $DATABASE_PORT -a -f setup.sql

@@ -36,7 +36,7 @@ DATABASE_PASSWORD=XXXXXXXXXXX
 ACCESS_KEY_ID=XXXXXXXXXXX
 SECRET_ACCESS_KEY=XXXXXXXXXXX
 ```
-
+6. Create database using `./create_database.sh`
 ## Architecture Diagram
 
 
