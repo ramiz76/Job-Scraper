@@ -157,7 +157,7 @@ def extract_company_details(data: dict) -> dict:
         hiring_company = {'company': hiring_org.get('name'),
                           'type': hiring_org.get('@type'),
                           'url': hiring_org.get('url')}
-    except KeyError:
+    except (KeyError, AttributeError):
         return None
     return hiring_company
 
@@ -239,8 +239,10 @@ def get_listing_data(path, file) -> dict:
 
 if __name__ == "__main__":
     load_dotenv()
-
-    listing_data = get_listing_data("pipeline/etl", range_salary)
+    listing = 'job101446543.html'
+    listing_two = 'job101446543.html'
+    listing_three = 'job101444078.html'
+    listing_data = get_listing_data("manchester/listing", listing_three)
     print(listing_data)
     # skills = testing_model_('practise/data_use_this/bristol/listing')
     # if skills:

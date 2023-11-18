@@ -42,13 +42,17 @@ def setup(city):
 def run_pipeline(conn):
     """Runs ETL pipeline."""
     for city in CITIES:
+        print(f"processing {city}")
         setup(city)
         # run_extract(city)
         path = FOLDER_PATHS.format(city, 'listing', '')
         files = listdir(path)
         for file in files:
-            print(file)
-            listing_data = get_listing_data(path, file)
+            try:
+                listing_data = get_listing_data(path, file)
+            except AttributeError as err:
+                print(f"Error processing {file}: {err}")
+                continue
             run_load(conn, file.strip('.html'), listing_data)
 
 
