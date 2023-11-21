@@ -27,3 +27,6 @@ ner_training/data
 ner_training/output
 base_config.cfg
 model-output
+old_archive
+archive
+sandbox

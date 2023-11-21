@@ -3,10 +3,14 @@ This module populates the job listing database with the extracted data.
 """
 from os import environ
 from dotenv import load_dotenv
+import re
+
 from psycopg2 import connect, DatabaseError
 from psycopg2.extensions import connection
 from psycopg2.errors import UniqueViolation
-from psycopg2.sql import Identifier, SQL, Placeholder
+from psycopg2.sql import Identifier, SQL, Placeholder, Literal
+
+from transform import find_most_similar_keyword
 
 LISTING_NAMES = [
     "job_listing",
@@ -56,7 +60,7 @@ def populate_table(conn, table_name, column_names: list, data: list) -> int:
                 columns=columns,
                 values=values,
                 id=Identifier(table_name + "_id"))
-            cur.execute(query, list(data))
+            cur.execute(query, data)
             id = cur.fetchone()
             if id:
                 conn.commit()
@@ -90,6 +94,18 @@ def get_id(conn, table_name: str, data: list, column_names=""):
             if result:
                 return result[0]
             else:
+                if table_name == 'requirement':
+                    similar_keywords = find_similar_keyword(
+                        conn, table_name, table_name, single_value)
+                    if similar_keywords:
+                        match = find_most_similar_keyword(
+                            single_value, similar_keywords)
+                        if match:
+                            get_id(conn, table_name='requirement',
+                                   column_names=['requirement',
+                                                 'requirement_type_id'],
+                                   data=[match, data[1]])
+                        # fix this (also need to implement alias table)
                 return populate_table(conn, table_name, column_names, data)
 
     except DatabaseError as err:
@@ -97,9 +113,22 @@ def get_id(conn, table_name: str, data: list, column_names=""):
         return None
 
 
-def populate_requirements_table(conn, listing_id, requirement):
-    """populate requirement data of job listing in requirements table of rds."""
-    pass
+def find_similar_keyword(conn, column, table, keyword):
+    """Query database to return data that are similar to keyword"""
+    try:
+        with conn.cursor() as cur:
+            query = SQL("SELECT {column} FROM {table} WHERE {column} ILIKE {keyword} ESCAPE ''").format(
+                table=Identifier(table),
+                column=Identifier(column),
+                keyword=Literal("%" + keyword + "%")
+            )
+            cur.execute(query)
+            result = cur.fetchall()
+        if result:
+            return [keyword[0].lower() for keyword in result if isinstance(keyword[0], str)]
+    except (IndexError, TypeError) as e:
+        print(f"Error during search: {e}")
+        return None
 
 
 def run_load(conn, file: str, listing_data: dict):
@@ -134,12 +163,13 @@ def run_load(conn, file: str, listing_data: dict):
         for requirement in requirements:
             entities = requirement[1].get("entities")
             for entity in entities:
+                keyword = re.sub('[^A-Za-z0-9]+', '', entity[0])
                 requirement_type_id = get_id(conn, table_name='requirement_type',
                                              data=[entity[1]])
                 requirement_id = get_id(conn, table_name='requirement',
                                         column_names=['requirement',
                                                       'requirement_type_id'],
-                                        data=[entity[0], requirement_type_id])
+                                        data=[keyword.lower(), requirement_type_id])
                 populate_table(conn, table_name='requirement_link', column_names=[
                     'requirement_id', 'job_listing_id'], data=[requirement_id, job_listing_id])
 
@@ -152,7 +182,10 @@ if __name__ == "__main__":
         'requirements': [['Leading solutions for data engineering', {'entities': []}], ['Maintain the integrity of both the design and the data that is held within the architecture', {'entities': []}], ['Champion and educate people in the development and use of data engineering best practices', {'entities': []}], ['Support the Head of Data Engineering and lead by example', {'entities': [['lead', 'SOFT']]}], ['Contribute to the development of database management services and associated processes relating to the delivery of data solutions', {'entities': [['database management services', 'SOFT'], ['data solutions', 'SOFT']]}], ['Provide requirements analysis, documentation, development, delivery and maintenance of data platforms.', {'entities': [['requirements analysis', 'SOFT']]}], ['Develop database requirements in a structured and logical manner ensuring delivery is aligned with business prioritisation and best practice', {'entities': []}], ['Design and deliver performance enhancements, application migration processes and version upgrades across a pipeline of BI environments.', {'entities': [['processes', 'SOFT']]}], ['Provide support for the scoping and delivery of BI capability to internal users.', {'entities': []}], ['5 years Data Engineering / ETL development experience (must have)', {'entities': [['ETL', 'SOFT']]}], ['Expereuene working within a regulated environment (must have)', {'entities': [['Expereuene', 'HARD']]}], ['5 years data design experience in an MI / BI / Analytics environment (Kimball, lake house, data lake)', {'entities': [['MI / BI / Analytics', 'SOFT'], ['Kimball', 'SOFT'], ['lake house', 'SOFT'], ['data lake', 'SOFT']]}], ['Excellent Data Warehouse with substantial experience in extracting, reporting and manipulating data from a data warehouse environment are essential', {'entities': [['Data Warehouse', 'SOFT']]}], ['Significant technical skills such as Transact SQL language, relational database skills are essential', {'entities': [['Transact SQL', 'HARD'], ['relational database', 'SOFT']]}], ['Evidence of delivering complex data platforms and solutions', {'entities': []}], ['Experience with cloud data platforms (Microsoft Azure) (nice to have)', {'entities': [['Microsoft Azure) (', 'HARD']]}], ['Microsoft SQL Server 2019 certification is desirable', {'entities': [['Microsoft SQL Server', 'CERT']]}]]}
     try:
         db_conn = db_connection()
-        run_load(db_conn, 'job1222345', listing_data)
+        similar_keywords = find_similar_keyword(
+            db_conn, 'requirement', 'requirement', 'Python')
+        matches = find_most_similar_keyword('Python', similar_keywords)
+        print(matches)
 
     finally:
         db_conn.close()

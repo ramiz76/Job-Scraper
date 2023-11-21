@@ -6,6 +6,7 @@ from time import sleep
 from datetime import datetime
 from random import randint
 import re
+from shutil import move
 
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
@@ -20,7 +21,7 @@ from selenium.common.exceptions import TimeoutException
 DATE = datetime.now().strftime("%y_%m_%d")
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
 ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=3"
-CITIES = ['london', 'manchester', 'bristol', 'birmingham']
+# CITIES = ['london', 'manchester', 'bristol', 'birmingham']
 FOLDER_PATHS = "{}/{}"
 
 
@@ -29,7 +30,7 @@ def create_driver() -> webdriver:
     Create and return a headless Chrome webdriver.
     """
     option = Options()
-    option.add_argument("--headless")
+    # option.add_argument("--headless")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
                               options=option)
     return driver
@@ -50,12 +51,14 @@ def accept_cookies(driver) -> None:
 
 
 def setup(city):
-    """
-    Create required folders to store job listing data.
-    """
-    makedirs(FOLDER_PATHS.format(city, 'page'), exist_ok=True)
-    makedirs(FOLDER_PATHS.format(
-        city, 'listing'), exist_ok=True)
+    """Create required folders for pipeline to run."""
+    listing_path = FOLDER_PATHS.format(
+        city, 'listing')
+    webpage_path = FOLDER_PATHS.format(city, 'page', '')
+    makedirs(webpage_path, exist_ok=True)
+    makedirs(listing_path, exist_ok=True)
+    makedirs(f"archive/{webpage_path}", exist_ok=True)
+    makedirs(f"archive/{listing_path}", exist_ok=True)
 
 
 def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> str:
@@ -168,9 +171,8 @@ def get_job_id(href: str) -> str:
 def run_extract(city) -> None:
     """check if for load"""
     try:
-        print('processing', city)
         driver = create_driver()
-        setup(city)
+        # setup(city)
         webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
         if webpage:
             process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
@@ -210,6 +212,3 @@ def run_extract(city) -> None:
 #                                         f'{page_num}-{DATE}', webpage)
 #     finally:
 #         driver.quit()
-
-if __name__ == "__main__":
-    run_extract()

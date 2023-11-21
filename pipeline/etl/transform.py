@@ -10,6 +10,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import spacy
 from dotenv import load_dotenv
+from rapidfuzz.distance import Levenshtein
+from rapidfuzz.process import extractOne, extract
 
 comp_salary = 'job101304099.html'
 range_salary = 'job101290399.html'
@@ -183,16 +185,6 @@ def open_skills_json() -> set:
     return skills_set
 
 
-# def extract_skills_from_description(job_desc: list) -> dict:
-#     skills_dict = {}
-#     for sentence in job_desc:
-#         skills_list = []
-#         sentence = NLP_SKILLS(sentence)
-#         for ent in sentence.ents:
-#             skills_list.append([ent.text, ent.label_])
-#         skills_dict[sentence.text] = skills_list
-#     return skills_dict
-
 def extract_skills_from_description(job_desc: list) -> list:
     all_sentence_list = []
     for sentence in job_desc:
@@ -227,7 +219,6 @@ def testing_model_(path):
 
 
 def get_listing_data(path, file) -> dict:
-
     html = open_html_file(f"{path}/{file}")
     listing_data = parse_listing_data(html)
     job_details = extract_job_details(html, listing_data)
@@ -237,13 +228,22 @@ def get_listing_data(path, file) -> dict:
     return {'company': company_details, 'job': job_details, 'requirements': requirements}
 
 
+def find_most_similar_keyword(keyword: str, similar_keywords: list):
+    matches = extractOne(keyword.lower(), similar_keywords,
+                         scorer=Levenshtein.normalized_similarity, score_cutoff=0.8)
+    if matches:
+        print(keyword, matches)
+        return matches[0]
+    return None
+
+
 if __name__ == "__main__":
     load_dotenv()
     listing = 'job101446543.html'
     listing_two = 'job101446543.html'
     listing_three = 'job101444078.html'
-    listing_data = get_listing_data("manchester/listing", listing_three)
-    print(listing_data)
+    # listing_data = get_listing_data("manchester/listing", listing_three)
+    # print(listing_data)
     # skills = testing_model_('practise/data_use_this/bristol/listing')
     # if skills:
     #     load_json(skills)
