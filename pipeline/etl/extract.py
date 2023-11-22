@@ -30,7 +30,7 @@ def create_driver() -> webdriver:
     Create and return a headless Chrome webdriver.
     """
     option = Options()
-    # option.add_argument("--headless")
+    option.add_argument("--headless")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
                               options=option)
     return driver
@@ -151,28 +151,10 @@ def get_job_id(href: str) -> str:
     return re.search(r'job(\d+)', href)
 
 
-# def run_extract(driver, city):
-#     """check if for load"""
-#     try:
-#         print('processing', city)
-#         webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
-#         process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
-#         webpages = get_webpages_href(BeautifulSoup(webpage, 'html.parser'))
-#         for i, url in enumerate(webpages):
-#             page_num = str(i+2)
-#             webpage = make_listings_request(driver, url, "")
-
-#             process_webpage(driver, city, 'page',
-#                             f'{page_num}-{DATE}', webpage)
-#     except:
-#         print(f"Error processing {city}")
-
-
 def run_extract(city) -> None:
     """check if for load"""
     try:
         driver = create_driver()
-        # setup(city)
         webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
         if webpage:
             process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
@@ -189,26 +171,3 @@ def run_extract(city) -> None:
     finally:
         driver.quit()
 
-
-# def run_extract() -> None:
-#     """
-#     Main function to execute the extraction process for all cities.
-#     """
-#     try:
-#         driver = create_driver()
-#         for city in CITIES:
-#             setup(city)
-#             print('processing', city)
-#             webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
-#             if webpage:
-#                 process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
-#                 webpages = get_webpages_href(
-#                     BeautifulSoup(webpage, 'html.parser'))
-#                 for i, url in enumerate(webpages):
-#                     page_num = str(i+2)
-#                     webpage = make_listings_request(driver, url, "")
-#                     if webpage:
-#                         process_webpage(driver, city, 'page',
-#                                         f'{page_num}-{DATE}', webpage)
-#     finally:
-#         driver.quit()

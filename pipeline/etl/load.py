@@ -96,16 +96,12 @@ def get_id(conn, table_name: str, data: list, column_names=""):
             else:
                 if table_name == 'requirement':
                     similar_keywords = find_similar_keyword(
-                        conn, table_name, table_name, single_value)
+                        conn, ['requirement_id', 'alias'], 'alias', single_value)
                     if similar_keywords:
                         match = find_most_similar_keyword(
                             single_value, similar_keywords)
                         if match:
-                            get_id(conn, table_name='requirement',
-                                   column_names=['requirement',
-                                                 'requirement_type_id'],
-                                   data=[match, data[1]])
-                        # fix this (also need to implement alias table)
+                            return match
                 return populate_table(conn, table_name, column_names, data)
 
     except DatabaseError as err:
@@ -113,19 +109,20 @@ def get_id(conn, table_name: str, data: list, column_names=""):
         return None
 
 
-def find_similar_keyword(conn, column, table, keyword):
+def find_similar_keyword(conn, column_names, table, keyword):
     """Query database to return data that are similar to keyword"""
     try:
+        columns = SQL(', ').join(map(Identifier, column_names))
         with conn.cursor() as cur:
-            query = SQL("SELECT {column} FROM {table} WHERE {column} ILIKE {keyword} ESCAPE ''").format(
+            query = SQL("SELECT {column} FROM {table} WHERE {table} ILIKE {keyword} ESCAPE ''").format(
                 table=Identifier(table),
-                column=Identifier(column),
+                column=columns,
                 keyword=Literal("%" + keyword + "%")
             )
             cur.execute(query)
             result = cur.fetchall()
         if result:
-            return [keyword[0].lower() for keyword in result if isinstance(keyword[0], str)]
+            return result
     except (IndexError, TypeError) as e:
         print(f"Error during search: {e}")
         return None
@@ -163,7 +160,7 @@ def run_load(conn, file: str, listing_data: dict):
         for requirement in requirements:
             entities = requirement[1].get("entities")
             for entity in entities:
-                keyword = re.sub('[^A-Za-z0-9]+', '', entity[0])
+                keyword = entity[0]
                 requirement_type_id = get_id(conn, table_name='requirement_type',
                                              data=[entity[1]])
                 requirement_id = get_id(conn, table_name='requirement',

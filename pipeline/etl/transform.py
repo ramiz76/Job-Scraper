@@ -228,12 +228,17 @@ def get_listing_data(path, file) -> dict:
     return {'company': company_details, 'job': job_details, 'requirements': requirements}
 
 
-def find_most_similar_keyword(keyword: str, similar_keywords: list):
-    matches = extractOne(keyword.lower(), similar_keywords,
-                         scorer=Levenshtein.normalized_similarity, score_cutoff=0.8)
-    if matches:
-        print(keyword, matches)
-        return matches[0]
+def find_most_similar_keyword(keyword: str, keywords: list) -> int:
+    keywords_list = [keyword[1].lower()
+                     for keyword in keywords if isinstance(keyword[1], str)]
+    keywords_dict = {}
+    for keyword in keywords:
+        keywords_dict[keyword[1]] = keyword[0]
+
+    match = extractOne(keyword[1].lower(), keywords_list,
+                       scorer=Levenshtein.normalized_similarity, score_cutoff=0.8)
+    if match:
+        return keywords_dict.get(match)
     return None
 
 
