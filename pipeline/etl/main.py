@@ -50,6 +50,7 @@ def run_pipeline(conn):
         setup(city)
         # run_extract(city)
         path = FOLDER_PATHS.format(city, 'listing', '')
+        webpage_path = FOLDER_PATHS.format(city, 'page', '')
         files = listdir(path)
         for file in files:
             try:
@@ -59,6 +60,8 @@ def run_pipeline(conn):
                 continue
             run_load(conn, file.strip('.html'), listing_data)
             move(f"{path}/{file}", f"archive/{path}/{file}")
+        for page in listdir(webpage_path):
+            move(f"{webpage_path}/{page}", f"archive/{webpage_path}/{page}")
 
 
 if __name__ == "__main__":

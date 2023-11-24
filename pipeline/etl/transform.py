@@ -191,7 +191,7 @@ def extract_skills_from_description(job_desc: list) -> list:
         tags_list = []
         sentence = NLP_SKILLS(sentence)
         for ent in sentence.ents:
-            tags_list.append([ent.text, ent.label_])
+            tags_list.append([ent.text.replace('\u00a0', ""), ent.label_])
         all_sentence_list.append([sentence.text, {"entities": tags_list}])
     return all_sentence_list
 
@@ -228,17 +228,16 @@ def get_listing_data(path, file) -> dict:
     return {'company': company_details, 'job': job_details, 'requirements': requirements}
 
 
-def find_most_similar_keyword(keyword: str, keywords: list) -> int:
+def find_most_similar_keyword(single_value: str, keywords: list) -> int:
     keywords_list = [keyword[1].lower()
                      for keyword in keywords if isinstance(keyword[1], str)]
     keywords_dict = {}
     for keyword in keywords:
-        keywords_dict[keyword[1]] = keyword[0]
-
-    match = extractOne(keyword[1].lower(), keywords_list,
+        keywords_dict[keyword[1].lower()] = keyword[0]
+    match = extractOne(single_value, keywords_list,
                        scorer=Levenshtein.normalized_similarity, score_cutoff=0.8)
     if match:
-        return keywords_dict.get(match)
+        return keywords_dict.get(match[0])
     return None
 
 
