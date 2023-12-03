@@ -9,9 +9,8 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 import spacy
-from dotenv import load_dotenv
 from rapidfuzz.distance import Levenshtein
-from rapidfuzz.process import extractOne, extract
+from rapidfuzz.process import extractOne
 
 comp_salary = 'job101304099.html'
 range_salary = 'job101290399.html'
@@ -25,9 +24,6 @@ PERIOD = {'year': ['year', 'annum', 'annual', 'annually', 'p.a'],
 NLP_LG = spacy.load('en_core_web_lg')
 NLP_SKILLS = spacy.load("ner_training/output/model-best")
 
-
-# TODO
-# Create a link table for employment type where there can be multiple (FULL TIME, INTERN etc)
 
 def open_html_file(file_path: str) -> BeautifulSoup:
     """Open job listing html file and return as BeautifulSoup Object."""
@@ -240,14 +236,3 @@ def find_most_similar_keyword(single_value: str, keywords: list) -> int:
         return keywords_dict.get(match[0])
     return None
 
-
-if __name__ == "__main__":
-    load_dotenv()
-    listing = 'job101446543.html'
-    listing_two = 'job101446543.html'
-    listing_three = 'job101444078.html'
-    # listing_data = get_listing_data("manchester/listing", listing_three)
-    # print(listing_data)
-    # skills = testing_model_('practise/data_use_this/bristol/listing')
-    # if skills:
-    #     load_json(skills)

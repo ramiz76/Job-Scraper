@@ -1,7 +1,7 @@
-
 from os import environ
-from dotenv import load_dotenv
 import json
+
+from dotenv import load_dotenv
 
 from load import db_connection, populate_table
 

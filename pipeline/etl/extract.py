@@ -6,7 +6,6 @@ from time import sleep
 from datetime import datetime
 from random import randint
 import re
-from shutil import move
 
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
@@ -21,7 +20,6 @@ from selenium.common.exceptions import TimeoutException
 DATE = datetime.now().strftime("%y_%m_%d")
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
 ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=3"
-# CITIES = ['london', 'manchester', 'bristol', 'birmingham']
 FOLDER_PATHS = "{}/{}"
 
 
@@ -170,4 +168,3 @@ def run_extract(city) -> None:
         print(f"Error processing {city}")
     finally:
         driver.quit()
-
