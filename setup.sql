@@ -70,7 +70,7 @@ CREATE TABLE requirement (
 CREATE TABLE job_listing (
     job_listing_id BIGINT GENERATED ALWAYS AS IDENTITY,
     job_listing TEXT NOT NULL UNIQUE,
-    title_id TEXT NOT NULL,
+    title_id INT NOT NULL,
     posting_date_id INT NOT NULL,
     location_id INT NOT NULL,
     employment_type_id INT NOT NULL,
