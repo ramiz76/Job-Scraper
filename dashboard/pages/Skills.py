@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-from utils import select_requirement_links, select_alias
+from utils import select_requirement_links, select_alias, select_grouped_requirements
 from static import home_set_left_column
 CHOICES = ('HARD', 'SOFT', 'PERK', 'CERT')
 GENERAL_SKILLS = ['SQL']
@@ -16,7 +16,7 @@ def display_requirement_list():
 
 def set_type_df(response):
     df = pd.DataFrame(columns=response['columns'], data=response['rows'])
-    df.to_csv('dashboard/requirements.csv', index=False)
+    # df.to_csv('dashboard/requirements.csv', index=False)
     return df[['Requirement', 'Requirement Type', 'Listing Count', 'Total Listings']]
 
 
@@ -50,13 +50,18 @@ def group_aliases(req_df):
     return group_skills(req_df)
 
 
+def get_grouped_requirements():
+    response = select_grouped_requirements()
+    return pd.DataFrame(columns=response['columns'], data=response['rows'])
+
+
 def get_skill_details(skill, skill_id):
     """Return DataFrame with details associated with skill."""
 
 
-
 if __name__ == "__main__":
     all_requirements = select_requirement_links()
+    grouped_requirements = get_grouped_requirements()
     aliases = select_alias()
     aliases_df = create_dataframe(aliases)
     req_df = create_dataframe(all_requirements)
@@ -67,4 +72,4 @@ if __name__ == "__main__":
     type_choices = display_requirement_list()
     left_column, middle_column, right_column = st.columns([3, 1, 1])
     with left_column:
-        home_set_left_column(req_df, type_choices)
+        home_set_left_column(req_df, type_choices, "Requirement Type")

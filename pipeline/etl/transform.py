@@ -235,4 +235,3 @@ def find_most_similar_keyword(single_value: str, keywords: list) -> int:
     if match:
         return keywords_dict.get(match[0])
     return None
-

@@ -5,7 +5,7 @@ CREATE DATABASE :dbname;
 
 CREATE TABLE industry (
     industry_id INT GENERATED ALWAYS AS IDENTITY,
-    industry TEXT NOT NULL UNIQUE,
+    industry TEXT UNIQUE,
     PRIMARY KEY (industry_id)
 );
 
@@ -23,7 +23,7 @@ CREATE TABLE requirement_type (
 
 CREATE TABLE location (
     location_id INT GENERATED ALWAYS AS IDENTITY,
-    location TEXT NOT NULL UNIQUE,
+    location TEXT UNIQUE,
     PRIMARY KEY (location_id)
 );
 
@@ -41,7 +41,7 @@ CREATE TABLE salary (
 
 CREATE TABLE employment_type (
     employment_type_id INT GENERATED ALWAYS AS IDENTITY,
-    employment_type TEXT NOT NULL UNIQUE,
+    employment_type TEXT UNIQUE,
     PRIMARY KEY (employment_type_id)
 );
 
@@ -72,12 +72,12 @@ CREATE TABLE job_listing (
     job_listing TEXT NOT NULL UNIQUE,
     title_id INT NOT NULL,
     posting_date_id INT NOT NULL,
-    location_id INT NOT NULL,
-    employment_type_id INT NOT NULL,
-    company_id INT NOT NULL,
+    location_id INT,
+    employment_type_id INT,
+    company_id INT,
     url TEXT NOT NULL UNIQUE,
     high_salary_id INT NOT NULL,
-    industry_id INT NOT NULL,
+    industry_id INT,
     low_salary_id INT NOT NULL,
     salary_type_id INT NOT NULL,
     PRIMARY KEY (job_listing_id),
@@ -111,3 +111,4 @@ CREATE TABLE alias (
 );
 
 INSERT INTO requirement_type (requirement_type) VALUES ('HARD'),('SOFT'),('CERT'),('PERK');
+

@@ -19,7 +19,12 @@ from selenium.common.exceptions import TimeoutException
 
 DATE = datetime.now().strftime("%y_%m_%d")
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
-ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=3"
+# ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=7"
+ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/{}/in-{}?radius=0&postedWithin=14"
+
+JOB_TITLES = ["data-engineer", "software-engineer",
+              "data-analyst", "data-scientist", "cloud-engineer", "devops-engineer",
+              "database-administrator"]
 FOLDER_PATHS = "{}/{}"
 
 
@@ -59,12 +64,12 @@ def setup(city):
     makedirs(f"archive/{listing_path}", exist_ok=True)
 
 
-def make_listings_request(driver: webdriver, url: str, attribute: str = "") -> str:
+def make_listings_request(driver: webdriver, url: str, attribute_one: str = "", attribute_two: str = "") -> str:
     """
     Perform a GET request to retrieve HTML data of a job listing website.
     Returns the page source if successful, otherwise returns None.
     """
-    payload = url.format(attribute)
+    payload = url.format(attribute_one, attribute_two)
     driver.get(payload)
     accept_cookies(driver)
     if driver.title:
@@ -88,8 +93,14 @@ def get_listings_href(html: BeautifulSoup) -> list:
     Returns a list of href strings.
     """
     jobs = html.find_all(class_="res-1tps163")
-    listings_href = [
-        job.find('a', class_='res-1na8b7y').get('href') for job in jobs]
+    if not jobs:
+        jobs = html.find_all(class_="res-v10brk")
+    try:
+        listings_href = [
+            job.find('a', class_='res-1na8b7y').get('href') for job in jobs]
+    except AttributeError:
+        listings_href = [
+            job.find('a', class_='res-it6nri').get('href') for job in jobs]
     return listings_href
 
 
@@ -149,22 +160,39 @@ def get_job_id(href: str) -> str:
     return re.search(r'job(\d+)', href)
 
 
-def run_extract(city) -> None:
+# def run_extract(city, job_title) -> None:
+#     """check if for load"""
+#     try:
+#         driver = create_driver()
+#         webpage = make_listings_request(
+#             driver, ALL_LISTINGS_URL, job_title, city)
+#         if webpage:
+#             process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
+#             webpages = get_webpages_href(
+#                 BeautifulSoup(webpage, 'html.parser'))
+#             for i, url in enumerate(webpages):
+#                 page_num = str(i+2)
+#                 webpage = make_listings_request(driver, url, "")
+#                 if webpage:
+#                     process_webpage(driver, city, 'page',
+#                                     f'{page_num}-{DATE}', webpage)
+#     except:
+#         print(f"Error processing {city}")
+#     finally:
+#         driver.quit()
+
+def run_extract(city, job_title) -> None:
     """check if for load"""
-    try:
-        driver = create_driver()
-        webpage = make_listings_request(driver, ALL_LISTINGS_URL, city)
-        if webpage:
-            process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
-            webpages = get_webpages_href(
-                BeautifulSoup(webpage, 'html.parser'))
-            for i, url in enumerate(webpages):
-                page_num = str(i+2)
-                webpage = make_listings_request(driver, url, "")
-                if webpage:
-                    process_webpage(driver, city, 'page',
-                                    f'{page_num}-{DATE}', webpage)
-    except:
-        print(f"Error processing {city}")
-    finally:
-        driver.quit()
+    driver = create_driver()
+    webpage = make_listings_request(
+        driver, ALL_LISTINGS_URL, job_title, city)
+    if webpage:
+        process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
+        webpages = get_webpages_href(
+            BeautifulSoup(webpage, 'html.parser'))
+        for i, url in enumerate(webpages):
+            page_num = str(i+2)
+            webpage = make_listings_request(driver, url, "")
+            if webpage:
+                process_webpage(driver, city, 'page',
+                                f'{page_num}-{DATE}', webpage)

@@ -10,3 +10,6 @@ pylint
 rapidfuzz
 streamlit
 nltk
+streamlit_folium
+ipykernel
+plotly_express
