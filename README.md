@@ -38,7 +38,7 @@ SECRET_ACCESS_KEY=XXXXXXXXXXX
 ```
 6. Create database using `./create_database.sh`
 7. Run Job-Scraper script using `python3 pipeline/etl/main.py`
-7. Run Job-Scraper dashboard using `streamlit run dashboard/Home.py`
+7. Run Job-Scraper dashboard using `streamlit run dashboard/home.py`
 
 ## Architecture Diagram
 
