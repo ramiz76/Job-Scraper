@@ -1,34 +1,34 @@
 """Unit tests for extract.py"""
 import pytest
 
-from tests.conftest import FakeListingURL, FakeDriver, FakeWebpageHref, FakeWebpageNoHref, FakeWebpageListings
-from etl.extract import make_listings_request, get_webpages_href, get_job_id, get_listings_href
+from pipeline.tests.conftest import FakeWebpageListings
+from pipeline.etl.extract import make_listings_request, get_webpages_href, get_job_id, get_listings_href
 
 
-def test_successful_webpage_request_returns_string():
-    url = FakeListingURL()
-    fake_driver = FakeDriver()
+def test_successful_webpage_request_returns_string(FakeListingURL, FakeDriver):
+    url = FakeListingURL
+    fake_driver = FakeDriver
     fake_driver.title = "Data Engineer Jobs"
     response = make_listings_request(fake_driver, url, "")
     assert isinstance(response, str)
 
 
-def test_unsuccessful_webpage_request_returns_None():
-    url = FakeListingURL()
-    fake_driver = FakeDriver()
+def test_unsuccessful_webpage_request_returns_None(FakeListingURL, FakeDriver):
+    url = FakeListingURL
+    fake_driver = FakeDriver
     fake_driver.title = ""
     response = make_listings_request(fake_driver, url, "")
     assert not response
 
 
-def test_get_webpages_href_returns_valid_url():
-    fake_webpage = FakeWebpageHref()
+def test_get_webpages_href_returns_valid_url(FakeWebpageHref):
+    fake_webpage = FakeWebpageHref
     response = get_webpages_href(fake_webpage)
     assert (href.startswith("https://www.") for href in response)
 
 
-def test_get_webpages_returns_None_if_no_additional_website_pages():
-    fake_webpage = FakeWebpageNoHref()
+def test_get_webpages_returns_None_if_no_additional_website_pages(FakeWebpageNoHref):
+    fake_webpage = FakeWebpageNoHref
     response = get_webpages_href(fake_webpage)
     assert not response
 
