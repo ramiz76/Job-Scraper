@@ -196,3 +196,7 @@ def run_extract(city, job_title) -> None:
             if webpage:
                 process_webpage(driver, city, 'page',
                                 f'{page_num}-{DATE}', webpage)
+
+
+def test_branch():
+    pass
