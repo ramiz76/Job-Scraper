@@ -22,7 +22,8 @@ LISTING_NAMES = [
     "company_id",
     "salary_type_id",
     "employment_type_id",
-    "industry_id"
+    "industry_id",
+    "title_category_id"
 ]
 
 
@@ -134,25 +135,27 @@ def run_load(conn, file: str, listing_data: dict):
     job = listing_data['job']
     requirements = listing_data['requirements']
     salary = job['salary']
-    salary[2] = 'unspecified' if salary[2] is None else salary[2]
-    low_salary_id = get_id(conn, table_name='salary', data=[salary[0]])
+    low_salary_id = get_id(conn, table_name='salary',
+                           data=[salary.get("lower")])
     high_salary_id = get_id(conn, table_name='salary',
-                            data=[salary[1]])
+                            data=[salary.get("upper")])
     location_id = get_id(conn, table_name='location',
                          data=[job.get("location")])
     title_id = get_id(conn, table_name='title',
                       data=[job.get("title")])
+    title_category_id = get_id(conn, table_name="title_category", data=[
+                               job.get("title_category")])
     posting_date_id = get_id(
         conn, table_name='posting_date', data=[job.get("date")])
     company_id = get_id(conn, table_name='company', data=[company])
     salary_type_id = get_id(
-        conn, table_name='salary_type', data=[salary[2]])
+        conn, table_name='salary_type', data=[salary.get("salary_type")])
     employment_type_id = get_id(
         conn, table_name='employment_type', data=[job.get("employment_type")[0]])
     industry_id = get_id(conn, table_name='industry',
                          data=[job.get("industry")])
     listing_data = [file, job.get("url"), title_id, low_salary_id, high_salary_id, location_id, posting_date_id,
-                    company_id, salary_type_id, employment_type_id, industry_id]
+                    company_id, salary_type_id, employment_type_id, industry_id, title_category_id]
 
     job_listing_id = populate_table(
         conn, table_name=LISTING_NAMES[0], column_names=LISTING_NAMES, data=listing_data)
@@ -169,4 +172,3 @@ def run_load(conn, file: str, listing_data: dict):
                                         data=[keyword.lower(), requirement_type_id])
                 populate_table(conn, table_name='requirement_link', column_names=[
                     'requirement_id', 'job_listing_id'], data=[requirement_id, job_listing_id])
-

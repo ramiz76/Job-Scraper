@@ -35,7 +35,7 @@ CREATE TABLE posting_date (
 
 CREATE TABLE salary (
     salary_id INT GENERATED ALWAYS AS IDENTITY,
-    salary BIGINT UNIQUE,
+    salary FLOAT UNIQUE,
     PRIMARY KEY (salary_id)
 );
 
@@ -59,6 +59,13 @@ CREATE TABLE title (
     PRIMARY KEY (title_id)
 );
 
+
+CREATE TABLE title_category (
+    title_category_id INT GENERATED ALWAYS AS IDENTITY,
+    title_category TEXT NOT NULL UNIQUE,
+    PRIMARY KEY (title_category_id)
+);
+
 CREATE TABLE requirement (
     requirement_id INT GENERATED ALWAYS AS IDENTITY,
     requirement TEXT NOT NULL UNIQUE,
@@ -80,6 +87,7 @@ CREATE TABLE job_listing (
     industry_id INT,
     low_salary_id INT NOT NULL,
     salary_type_id INT NOT NULL,
+    title_category_id INT NOT NULL,
     PRIMARY KEY (job_listing_id),
     FOREIGN KEY (low_salary_id) REFERENCES salary(salary_id),
     FOREIGN KEY (high_salary_id) REFERENCES salary(salary_id),
@@ -88,7 +96,8 @@ CREATE TABLE job_listing (
     FOREIGN KEY (company_id) REFERENCES company(company_id),
     FOREIGN KEY (salary_type_id) REFERENCES salary_type(salary_type_id),
     FOREIGN KEY (employment_type_id) REFERENCES employment_type(employment_type_id),
-    FOREIGN KEY (industry_id) REFERENCES industry(industry_id)
+    FOREIGN KEY (industry_id) REFERENCES industry(industry_id),
+    FOREIGN KEY (title_category_id) REFERENCES title_category(title_category_id)
 );
 
 CREATE TABLE requirement_link (

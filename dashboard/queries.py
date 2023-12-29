@@ -30,21 +30,6 @@ listing_count = """SELECT COUNT(*) FROM job_listing;"""
 all_titles = """SELECT title FROM title;"""
 
 
-title_groups = {
-    "Data Engineer": ["Data Engineer", "ETL"],
-    "Software Engineer": ["Software Engineer", "Software", "Programmer"],
-    "Cloud Engineer": ["Cloud Engineer", "Cloud", "AWS", "Azure", "GCP"],
-    "Business Intelligence": ["Business Intelligence", "BI", "Power BI", "Tableau", "Qlik"],
-    "Database Administrator": ["Database Administrator", "Database Developer", "Database Admin",
-                               "DBA", "SQL", "MySQL", "PostgreSQL", "Oracle"],
-    "DevOps Engineer": ["DevOps", "CI/CD", "Kubernetes", "Docker"],
-    "Data Scientist": ["Data Scientist", "Machine Learning", "AI", "Data Science"],
-    "Analyst": ["Analyst", "Data Analyst", "BI Analyst", "MI Analyst", "Analytics"],
-    "Architect": ["Data Architect", "Architect", "Modeller"],
-    "Other": []
-}
-
-
 grouped_requirements = """WITH GROUPED_SKILLS AS (
     SELECT
         r.requirement_id,
@@ -93,7 +78,20 @@ listing_data = """SELECT
     s1.salary AS low_salary, s2.salary AS high_salary,
     st.salary_type,
     ind.industry,
-    rt.requirement_type, r.requirement
+    rt.requirement_type, r.requirement,tc.title_category,
+       CASE
+           WHEN t.title ILIKE '%senior%' OR
+                t.title ILIKE '%lead%' OR
+                t.title ILIKE '%principal%' OR
+                t.title ILIKE '%head%' OR
+                t.title ILIKE '%manager%' THEN 'Senior Level'
+           WHEN t.title ILIKE '%junior%' OR
+                t.title ILIKE '%graduate%' OR
+                t.title ILIKE '%apprentice%' OR
+                t.title ILIKE '%intern%' OR
+                t.title ILIKE '%early careers%' THEN 'Junior Level'
+           ELSE 'Mid Level'
+       END AS title_level
 FROM 
     job_listing jl
 JOIN 
@@ -119,5 +117,7 @@ LEFT JOIN
 LEFT JOIN 
     requirement r ON rl.requirement_id = r.requirement_id
 LEFT JOIN 
-    requirement_type rt ON r.requirement_type_id = rt.requirement_type_id;
+    requirement_type rt ON r.requirement_type_id = rt.requirement_type_id
+JOIN 
+    title_category tc  ON tc.title_category_id = jl.title_category_id;
 """
