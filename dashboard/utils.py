@@ -8,7 +8,7 @@ from psycopg2.sql import SQL
 from dotenv import load_dotenv
 import streamlit as st
 
-from queries import title_groups, top_requirements, all_requirements, listing_data, all_titles, grouped_requirements, all_requirement_links, all_aliases, listing_count
+from queries import *
 
 
 def get_requirement_data():
@@ -97,27 +97,27 @@ def execute(_conn, _query):
         _conn.close()
 
 
-def group_titles(row):
-    title = row["title"]
-    l_title = title.lower()
-    found_category = False
-    level = find_title_level(l_title)
-    for title_group in title_groups.keys():
-        if title_group.lower() in l_title:
-            found_category = title_group
-            break
-    if not found_category:
-        for title_group, keywords in title_groups.items():
-            if any(re.search(r'\b' + re.escape(keyword.lower()) + r'\b',
-                             l_title) for keyword in keywords):
-                found_category = title_group
-                break
-    if found_category:
-        row["title_category"] = found_category
-    else:
-        row["title_category"] = "Other"
-    row["title_level"] = level
-    return row
+# def group_titles(row):
+#     title = row["title"]
+#     l_title = title.lower()
+#     found_category = False
+#     level = find_title_level(l_title)
+#     for title_group in title_groups.keys():
+#         if title_group.lower() in l_title:
+#             found_category = title_group
+#             break
+#     if not found_category:
+#         for title_group, keywords in title_groups.items():
+#             if any(re.search(r'\b' + re.escape(keyword.lower()) + r'\b',
+#                              l_title) for keyword in keywords):
+#                 found_category = title_group
+#                 break
+#     if found_category:
+#         row["title_category"] = found_category
+#     else:
+#         row["title_category"] = "Other"
+#     row["title_level"] = level
+#     return row
 
 
 def find_title_level(title):

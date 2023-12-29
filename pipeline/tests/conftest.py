@@ -169,10 +169,10 @@ def FakeListingLocationTuple():
             ({
                 'jobLocation': {
                     'address': {
-                        'addressRegion': 'BS'
+                        'addressRegion': 'Bs'
                     }
                 }
-            }, 'BS'),
+            }, 'Bs'),
             ({
                 'jobLocation': {
                     'address': {}
@@ -180,7 +180,7 @@ def FakeListingLocationTuple():
             }, None)]
 
 
-def FakeSalaryHTML():
+def FakeSalaryHTMLTests():
     return [(BeautifulSoup("""<section class="job-summary">
     <ul>
             <li class="location icon">
@@ -204,3 +204,21 @@ def FakeSalaryHTML():
         <li class="salary icon">
             <div>30k</div>
         </li></section>""", 'html.parser'), "30k")]
+
+
+@pytest.fixture
+def FakeSalaryHTML():
+    return BeautifulSoup("""<section class="job-summary">
+    <ul>
+            <li class="location icon">
+                <div>Northampton (NN4), <a href="/jobs/in-northampton" title="Jobs in Northampton" 
+             class="engagement-metric">Northampton</a></div>
+            </li>
+        <li class="salary icon">
+            <div>30k-40k plus compensation</div>
+        </li></ul></section>""", "html.parser")
+
+
+def CreateSalaryHTML(salary):
+    html_content = f"<html><body><section class='job-summary'><ul><li class='salary icon'><div>{salary}</div></li></ul></section></body></html>"
+    return BeautifulSoup(html_content, 'html.parser')

@@ -13,3 +13,5 @@ nltk
 streamlit_folium
 ipykernel
 plotly_express
+transformers
+torch

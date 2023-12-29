@@ -11,7 +11,7 @@ from transform import get_listing_data
 from load import run_load
 
 DATE = datetime.now().strftime("%y_%m_%d")
-CITIES = ['london', 'bristol', 'manchester', 'birmingham']
+CITIES = ['bristol', 'manchester', 'birmingham', 'london']
 FOLDER_PATHS = "{}/{}"
 JOB_TITLES = ["data-engineer", "software-engineer",
               "data-analyst", "data-scientist", "cloud-engineer", "devops-engineer",
@@ -44,15 +44,17 @@ def run_pipeline(conn):
             path = FOLDER_PATHS.format(city, 'listing', '')
             webpage_path = FOLDER_PATHS.format(city, 'page', '')
             files = listdir(path)
+            print(f"loading {job_title} job listings")
             for file in files:
                 try:
                     listing_data = get_listing_data(path, file)
-                except AttributeError as err:
+                    run_load(conn, file.strip('.html'), listing_data)
+                except (AttributeError, TypeError) as err:
                     print(f"Error processing {file}: {err}")
                     continue
-                run_load(conn, file.strip('.html'), listing_data)
                 move(f"{path}/{file}", f"archive/{path}/{file}")
             for page in listdir(webpage_path):
+                new_page = page
                 new_page = f"{job_title}-{page}"
                 rename(f"{webpage_path}/{page}", f"{webpage_path}/{new_page}")
                 move(f"{webpage_path}/{new_page}",
@@ -63,7 +65,6 @@ if __name__ == "__main__":
     try:
         db_conn = db_connection()
         driver = create_driver()
-
         run_pipeline(db_conn)
     finally:
         db_conn.close()

@@ -3,8 +3,8 @@ import pandas as pd
 import plotly.express as px
 
 
-from utils import select_listing_data, group_titles, select_titles
-from queries import title_groups
+from utils import *
+from queries import *
 
 
 @st.cache_data
@@ -59,6 +59,6 @@ def create_title_salary_chart(df):
 
 if __name__ == "__main__":
     df_listing = get_listing_data()
-    df_listing = df_listing.apply(group_titles, axis=1)
+    # df_listing = df_listing.apply(group_titles, axis=1)
     df = roles_sidebar()
     create_title_salary_chart(df)

@@ -19,9 +19,7 @@ from selenium.common.exceptions import TimeoutException
 
 DATE = datetime.now().strftime("%y_%m_%d")
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
-# ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/data-engineer/in-{}?radius=0&postedWithin=7"
-ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/{}/in-{}?radius=0&postedWithin=14"
-
+ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/{}/in-{}?radius=0&postedWithin=7"
 JOB_TITLES = ["data-engineer", "software-engineer",
               "data-analyst", "data-scientist", "cloud-engineer", "devops-engineer",
               "database-administrator"]
@@ -160,29 +158,8 @@ def get_job_id(href: str) -> str:
     return re.search(r'job(\d+)', href)
 
 
-# def run_extract(city, job_title) -> None:
-#     """check if for load"""
-#     try:
-#         driver = create_driver()
-#         webpage = make_listings_request(
-#             driver, ALL_LISTINGS_URL, job_title, city)
-#         if webpage:
-#             process_webpage(driver, city, 'page', f'1-{DATE}', webpage)
-#             webpages = get_webpages_href(
-#                 BeautifulSoup(webpage, 'html.parser'))
-#             for i, url in enumerate(webpages):
-#                 page_num = str(i+2)
-#                 webpage = make_listings_request(driver, url, "")
-#                 if webpage:
-#                     process_webpage(driver, city, 'page',
-#                                     f'{page_num}-{DATE}', webpage)
-#     except:
-#         print(f"Error processing {city}")
-#     finally:
-#         driver.quit()
-
 def run_extract(city, job_title) -> None:
-    """check if for load"""
+    """Runs the extract module."""
     driver = create_driver()
     webpage = make_listings_request(
         driver, ALL_LISTINGS_URL, job_title, city)
@@ -196,7 +173,3 @@ def run_extract(city, job_title) -> None:
             if webpage:
                 process_webpage(driver, city, 'page',
                                 f'{page_num}-{DATE}', webpage)
-
-
-def test_branch():
-    pass
