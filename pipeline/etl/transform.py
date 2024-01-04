@@ -15,7 +15,9 @@ from rapidfuzz import process, distance, fuzz
 DATE = datetime.now().strftime("%y_%m_%d")
 NLP_LG = spacy.load('en_core_web_lg')
 NLP_SKILLS = spacy.load("ner_training/output/model-best")
-RANGE_PATTERN = r'([$£€]?\d+(?:[,.]\d{1,3})*\.?\d{0,2}[kK]?)(\s*(?:-|to)\s*([$£€]?\d+(?:[,.]\d{1,3})*\.?\d{0,2}[kK]?))?'
+RANGE_PATTERN = r'(?<!\S)([$£€]?\d+(?:[,.]\d{1,3})*\.?\d{0,2}[kK]?)(?!\s*%)(?!\d)(\s*(?:-|to)\s*([$£€]?\d+(?:[,.]\d{1,3})*\.?\d{0,2}[kK]?))?'
+EXPERIENCE_INDICATORS = ['senior', 'lead', 'head of', 'junior','director',
+                         'graduate', 'apprentice', 'intern', 'early careers']
 
 
 def open_html_file(file_path: str) -> BeautifulSoup:
@@ -262,12 +264,12 @@ def find_most_similar_keyword(single_value: str, keywords: list) -> int:
 
 
 TITLE_GROUPS = {
-    "Data Engineer": ["data engineer", "etl developer", "data engineering", "big data engineer", "data pipeline engineer", "backend"],
-    "Software Engineer": ["software engineer", "ux/ui designer", "servicenow developer", ".net developer", "software developer",
+    "Software Engineer": ["software engineer", "react developer", "ux/ui designer", "ux/ui developer", "servicenow developer", ".net developer", "software developer",
                           "application developer", "front end", "web engineer", "frontend engineer", "programmer", "python developer", "java developer", "java engineer", "python engineer", "c# developer", "mobile systems engineer", "full stack"],
+    "Data Engineer": ["data engineer", "etl developer", "data engineering", "big data engineer", "data pipeline engineer", "backend"],
     "Cloud Engineer": ["cloud engineer", "cloud consultant", "cloud developer", "cloud integration"],
     "Business Intelligence": ["bi developer", "powerbi developer", "tableau developer", "business intelligence", "bi engineer"],
-    "Database Administrator": ["database administrator", "database admin", "sql dba", "sql developer", "mysql dba", "postgresql dba", "database developer", "oracle dba", "sql server dba"],
+    "Database Administrator": ["database administrator", "database admin", "sql dba", "sql developer", "mysql dba", "postgresql dba", "database developer", "oracle dba", "sql server dba", "database engineer"],
     "DevOps Engineer": ["devops", "devops engineer", "reliability engineer", "ci/cd engineer", "kubernetes engineer", "docker engineer"],
     "Data Scientist": ["scientist", "data scientist", "machine learning engineer", "ai engineer", "statistical analyst", "data science"],
     "Analyst": ["analyst", "data analyst", "business analyst", "analytics engineer", "technical analyst", "market analyst", "financial analyst"],
@@ -284,7 +286,9 @@ def get_title_from_url(url: str):
 
 def group_titles_by_category(url_title: str, title: str):
     category = "Other"
-    title = title.lower()
+    remove_exp = r'\b(?:' + '|'.join(EXPERIENCE_INDICATORS) + r')\b'
+    title = (re.sub(remove_exp, '',
+             title, flags=re.IGNORECASE)).lower()
     title_score = 0
     url_score = 0
     partial_score = 0
@@ -321,6 +325,7 @@ def group_titles_by_category(url_title: str, title: str):
 
 
 if __name__ == "__main__":
-    salary_text = "70 - 75K + 6% Pension, Private health 25 days etc"
-    found = re.search(r'\b\d+\s+days\b', salary_text)
+    salary_text = "good salary with 13% pension contribution"
+    salary_text_two = "30-40k with 20% pension"
+    found = re.search(RANGE_PATTERN, salary_text_two)
     print(found)
