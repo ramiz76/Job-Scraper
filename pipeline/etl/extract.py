@@ -19,10 +19,10 @@ from selenium.common.exceptions import TimeoutException
 
 DATE = datetime.now().strftime("%y_%m_%d")
 FULL_LISTING_URL = "https://www.totaljobs.com/{}"
-ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/{}/in-{}?radius=0&postedWithin=7"
-JOB_TITLES = ["data-engineer", "software-engineer",
-              "data-analyst", "data-scientist", "cloud-engineer", "devops-engineer",
-              "database-administrator"]
+ALL_LISTINGS_URL = "https://www.totaljobs.com/jobs/{}/in-{}?radius=0&postedWithin=3"
+# JOB_TITLES = ["data-engineer", "software-engineer",
+#               "data-analyst", "data-scientist", "cloud-engineer", "devops-engineer",
+#               "database-administrator"]
 FOLDER_PATHS = "{}/{}"
 
 

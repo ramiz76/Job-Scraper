@@ -118,7 +118,7 @@ def test_get_title_from_url(url, expected_title):
     ("data engineer", "Data Engineer", "Data Engineer"),
     ("distribution engineer", "Distribution Data Engineer", "Data Engineer"),
     ("data scientist", "Data Scientist", "Data Scientist"),
-    ("senior developer", "Senior Developer", "Other"),
+    ("senior developer", "Senior Developer", "Software Engineer"),
     ("junior servicenow developer",
      "Junior Service Now Developer", "Software Engineer"),
     ("erp analyst", "ERP / SQL Support Analyst", "Analyst"),
